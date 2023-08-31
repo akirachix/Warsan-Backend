@@ -3,7 +3,8 @@ name: Django Build and Test
 on:
   push:
     branches: [main]
-  Pull request:
+  pull_request:
+    branches: [main]
 
 jobs:
   test:
