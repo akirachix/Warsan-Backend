@@ -1,10 +1,11 @@
-name: Django Staging Deploy
+name: Django Dev Build and Test
 on:
   push:
     branches: [staging]
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-version-20.04
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -15,12 +16,10 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt
-    - name: Collect Static Files
+    - name: Run Tests
       run: |
-        python manage.py collectstatic --noinput
-    - name: Apply Database Migrations
-      run: |
-        python manage.py migrate
-    - name: Start Application
-      run: |
-        python manage.py runserver
+        python manage.py test
+
+
+
+
