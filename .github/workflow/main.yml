@@ -1,0 +1,25 @@
+name: Django Dev Build and Test
+on:
+  push:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-version-20.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python Environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Run Tests
+      run: |
+        python manage.py test
+
+
+
+
