@@ -4,14 +4,14 @@ on:
     branches: [dev]
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-version-20.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Set up Python Environment
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.9'
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -21,27 +21,5 @@ jobs:
         python manage.py test
 
 
-name: Django Dev Build and Test
-on:
-  push:
-    branches: [dev]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Set up Python Environment
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
 
 
-        

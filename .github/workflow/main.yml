@@ -1,9 +1,11 @@
-name: Django Staging Deploy
+name: Build and Test
 on:
   push:
-    branches: [staging]
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-version-20.04
     steps:
     - name: Checkout code
@@ -12,6 +14,23 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      run: |
+        python manage.py test
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python Environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -25,3 +44,5 @@ jobs:
     - name: Start Application
       run: |
         python manage.py runserver
+
+
