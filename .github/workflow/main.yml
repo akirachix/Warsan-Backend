@@ -19,6 +19,10 @@ jobs:
     - name: Make Migrations  
       run: |
         python manage.py makemigrations
+    - name: Migration
+      run: |
+        python3 manage.py migrate
+
     - name: Run Tests
       run: |
         python manage.py test
