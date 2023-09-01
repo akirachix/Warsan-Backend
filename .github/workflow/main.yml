@@ -16,8 +16,15 @@ jobs:
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt
-        python3 manage.py make migrations
+    - name: Make Migrations  
+      run: |
+        python manage.py makemigrations
+    - name: Migration
+      run: |
         python3 manage.py migrate
+    - name: Run server
+      run: |
+      python3 manage.py runserver
     - name: Run Tests
       run: |
         python manage.py test
