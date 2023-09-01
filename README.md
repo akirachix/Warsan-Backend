@@ -28,13 +28,16 @@ This assumes that python3 is linked to valid installation of python 3 and that p
 
 Installing inside virtualenv is recommended, however you can start your project without virtualenv too.
 
-
 If you don't have django installed for python 3 then run:
 
-$ pip3 install django
+`$ pip3 install django`
+
 And then:
 
-$ python3 -m django startproject \
+`$ python3 -m django startproject \`
+
+
+
 After that just install the local dependencies, run migrations, and start the server.
 
 
@@ -42,6 +45,7 @@ After that just install the local dependencies, run migrations, and start the se
 # Getting Started
 
 First clone the repository from Github and switch to the new directory:
+
 
 `$ git clone https://github.com/akirachix/Warsan-Backend.git`
 
