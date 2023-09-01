@@ -20,10 +20,9 @@
 If your project is already in an existing python3 virtualenv first install django by running
 
 Existing virtual env
-$ pip install django
-$ django-admin.py startproject \
 
-
+`$ pip install django`
+`$ django-admin.py startproject \`
 
 This assumes that python3 is linked to valid installation of python 3 and that pip is installed and pip3is valid for installing python 3 packages.
 
@@ -44,18 +43,18 @@ After that just install the local dependencies, run migrations, and start the se
 
 First clone the repository from Github and switch to the new directory:
 
-$ git clone https://github.com/akirachix/Warsan-Backend.git
+`$ git clone https://github.com/akirachix/Warsan-Backend.git`
 
-$ cd Warsan-Backend
+`$ cd Warsan-Backend`
 
 Activate the virtualenv for your project.
 
 Install project dependencies:
 
-$ pip install -r requirements/local.txt
+`$ pip install -r requirements/local.txt`
 Then simply apply the migrations:
 
-$ python manage.py migrate
+`$ python manage.py migrate`
 You can now run the development server:
 
-$ python manage.py runserver
+`$ python manage.py runserver`
