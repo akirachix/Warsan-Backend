@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 ]
 
 MIDDLEWARE = [
@@ -75,27 +76,13 @@ WSGI_APPLICATION = 'warsan.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.influxdb',
-        'NAME': 'mydb',  # Name of your InfluxDB database
-        'HOST': 'localhost',  # Host where InfluxDB is running
-        'PORT': 8086,  # Port on which InfluxDB is listening
-        'USER': '',  # InfluxDB username (if required)
-        'PASSWORD': '',  # InfluxDB password (if required)
-        'OPTIONS': {
-            # Additional options as needed, e.g., 'ssl': True for SSL connections
-        },
-    },
-    'influxdb': {
-        'ENGINE': 'django.db.backends.influxdb',
-        'NAME': 'mydb',  # Name of your InfluxDB database
-        'HOST': 'localhost',  # Host where InfluxDB is running
-        'PORT': 8086,  # Port on which InfluxDB is listening
-        'USER': '',  # InfluxDB username (if required)
-        'PASSWORD': '',  # InfluxDB password (if required)
-        'OPTIONS': {
-            # Additional options as needed, e.g., 'ssl': True for SSL connections
-        },
-    },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'warsan',
+        'USER': 'warsanuser',         # Replace with the PostgreSQL username you created
+        'PASSWORD': 'warsanpass',     # Replace with the PostgreSQL password you created
+        'HOST': 'localhost',          # Use 'localhost' if the database is on the same machine
+        'PORT': '',                   # Leave empty to use the default PostgreSQL port (5432)
+    }
 }
 
 
