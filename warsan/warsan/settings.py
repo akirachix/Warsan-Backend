@@ -75,8 +75,15 @@ WSGI_APPLICATION = 'warsan.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Keep SQLite for Django's default database
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.influxdb',
+        'NAME': 'mydb',  # Name of your InfluxDB database
+        'HOST': 'localhost',  # Host where InfluxDB is running
+        'PORT': 8086,  # Port on which InfluxDB is listening
+        'USER': '',  # InfluxDB username (if required)
+        'PASSWORD': '',  # InfluxDB password (if required)
+        'OPTIONS': {
+            # Additional options as needed, e.g., 'ssl': True for SSL connections
+        },
     },
     'influxdb': {
         'ENGINE': 'django.db.backends.influxdb',
