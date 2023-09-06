@@ -81,7 +81,7 @@ DATABASES = {
         'USER': 'warsanuser',         # Replace with the PostgreSQL username you created
         'PASSWORD': 'warsanpass',     # Replace with the PostgreSQL password you created
         'HOST': 'localhost',          # Use 'localhost' if the database is on the same machine
-        'PORT': '',                   # Leave empty to use the default PostgreSQL port (5432)
+        'PORT': '5432',                   # Leave empty to use the default PostgreSQL port (5432)
     }
 }
 
