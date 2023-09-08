@@ -1,0 +1,14 @@
+<!-- child_register.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Register a Child</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+  </form>
+  <a href="{% url 'guardian_detail' guardian.id %}">Back to Guardian Detail</a>
+{% endblock %}
+
+
