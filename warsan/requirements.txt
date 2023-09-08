@@ -1,8 +1,7 @@
 # Production Dependencies
 Django==3.2.6
-psycopg2==2.9.1
-gunicorn==20.1.0  
-
+psycopg2.binary==2.9.1
+gunicorn==20.1.0
 # Development Dependencies (optional)
 black==21.5b1
 flake8==3.9.2
