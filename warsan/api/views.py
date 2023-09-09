@@ -10,7 +10,7 @@ class Immunization_recordView(APIView):
         immunization_records = Immunization_Record.objects.all()
         serializer = Immunization_RecordSerializer(immunization_records, many=True)
         return Response(serializer.data)
-
+    
     def post(self, request):
         serializer = Immunization_RecordSerializer(data=request.data)
         if serializer.is_valid():
@@ -18,16 +18,13 @@ class Immunization_recordView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, pk, format=None):
-        immunization = self.get_object(pk)
-        serializer = Immunization_RecordSerializer(immunization)
-        return Response(serializer.data)
 
 
-class ImmunizationRecordDetailView(APIView):
-    def get_object(self, pk):
+
+class ImmunizationDetailView(APIView):
+    def get_object(self, id):
         try:
-            return Immunization_Record.objects.get(pk=pk)
+            return Immunization_Record.objects.get(id=id)
         except Immunization_Record.DoesNotExist:
             raise Http404
 
@@ -37,8 +34,8 @@ class ImmunizationRecordDetailView(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        immunization = self.get_object(pk)
-        serializer = Immunization_RecordSerializer(immunization, data=request.data)
+        customer = self.get_object(pk)
+        serializer = Immunization_RecordSerializer(customer, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
