@@ -3,4 +3,7 @@ from .models import Location
 
 # Register your models here.
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('state', 'region', 'district', 'vaccination_center')
+    list_display = ('state', 'region', 'district')
+
+
+admin.site.register(    Location,LocationAdmin)   
