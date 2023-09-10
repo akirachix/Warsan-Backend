@@ -28,12 +28,12 @@ class ImmunizationDetailView(APIView):
         except Immunization_Record.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, format=None):
+    def get(self, request, id, format=None):
         immunization = self.get_object(id)
         serializer = Immunization_RecordSerializer(immunization)
         return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
+    def put(self, request, id, format=None):
         immunization = self.get_object(id)
         serializer = Immunization_RecordSerializer(immunization, data=request.data)
         if serializer.is_valid():
@@ -42,7 +42,7 @@ class ImmunizationDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-    def delete(self, request, pk, format=None):
+    def delete(self, request, id, format=None):
         immunization = self.get_object(id)
         immunization.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)   
