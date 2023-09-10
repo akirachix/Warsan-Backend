@@ -19,7 +19,6 @@ from django.urls import path,include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from api.views import HealthWorkerListView, HealthWorkerSearchView, HealthWorkerFilterView, HealthWorkerDetailView
 
 
 schema_view = get_schema_view(
@@ -39,10 +38,6 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    # path('api/healthworkers/', HealthWorkerDetailView.as_view(), name='healthworker-Detail'),
-    # path('api/healthworkers/', HealthWorkerListView.as_view(), name='healthworker-list'),
-    path('api/healthworkers/search/', HealthWorkerSearchView.as_view(), name='healthworker-search'),
-    path('api/healthworkers/filter/', HealthWorkerFilterView.as_view(), name='healthworker-filter'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
