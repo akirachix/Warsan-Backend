@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Immunization_Record',
     'rest_framework',
+    'api'
     
 ]
 
@@ -80,9 +81,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'warsan',
-        'USER': 'warsanuser',         # Replace with the PostgreSQL username you created
-        'PASSWORD': 'warsanpass',     # Replace with the PostgreSQL password you created
-        'HOST': 'localhost',          # Use 'localhost' if the database is on the same machine
+        'USER': 'warsanuser',         
+        'PASSWORD': 'warsanpass',    
+        'HOST': 'localhost',         
         'PORT': '5432',                   
     }
 }
