@@ -6,40 +6,41 @@ from rest_framework.views import APIView
 from child.models import Child, Guardian
 from .serializers import ChildSerializer, GuardianSerializer
 
-@api_view(['GET', 'POST'])
-def guardian_list(request):
-    if request.method == 'GET':
+class GuardianList(APIView):
+    def get(self, request, format=None):
         guardians = Guardian.objects.all()
         serializer = GuardianSerializer(guardians, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request, format=None):
         serializer = GuardianSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def guardian_detail(request, pk):
-    try:
-        guardian = Guardian.objects.get(pk=pk)
-    except Guardian.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+class GuardianDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Guardian.objects.get(pk=pk)
+        except Guardian.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        # Serialize the guardian along with related children
+    def get(self, request, pk, format=None):
+        guardian = self.get_object(pk)
         serializer = GuardianSerializer(guardian)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    def put(self, request, pk, format=None):
+        guardian = self.get_object(pk)
         serializer = GuardianSerializer(guardian, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, pk, format=None):
+        guardian = self.get_object(pk)
         guardian.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
