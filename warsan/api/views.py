@@ -8,7 +8,7 @@ from .serializers import LocationSerializer
 # Create your views here.
 
 
- # List of all locations, or create a new location.
+ # List of all locations,create,update or delete a new location.
 class LocationListView(APIView):
         
     def get(self, request):

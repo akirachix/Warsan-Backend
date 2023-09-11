@@ -6,4 +6,4 @@ class LocationAdmin(admin.ModelAdmin):
     list_display = ('state', 'region', 'district')
 
 
-admin.site.register(    Location,LocationAdmin)   
+admin.site.register(Location,LocationAdmin)   
