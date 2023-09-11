@@ -42,4 +42,4 @@ class VaccineDetailView(APIView):
     def delete(self, request, pk):
         vaccine = self.get_object(pk)
         vaccine.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response("Vaccine Deleted",status=status.HTTP_204_NO_CONTENT)

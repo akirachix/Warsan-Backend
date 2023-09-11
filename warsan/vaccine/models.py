@@ -1,10 +1,9 @@
 
-
 from django.db import models
 
 class Vaccine(models.Model):
 
-    name=models.CharField(max_length=32)
+    name=models.CharField(max_length=32, unique= True)
     target_disease = models.CharField(max_length=32)
     minimum_age = models.IntegerField()
     maximum_age =models.IntegerField()
