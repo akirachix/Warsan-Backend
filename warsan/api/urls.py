@@ -8,4 +8,5 @@ urlpatterns = [
     path('healthworkers/<int:pk>/', HealthWorkerDetailView.as_view(), name='healthworker-detail'),
     path('healthworkers/search/', HealthWorkerSearchView.as_view(), name='healthworker-search'),
     path('healthworkers/filter/', HealthWorkerFilterView.as_view(), name='healthworker-filter'),
+
 ]

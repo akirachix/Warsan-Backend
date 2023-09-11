@@ -1,8 +1,6 @@
 from django.test import TestCase
 from psycopg2 import IntegrityError
-
 from .models import HealthWorker
-
 from faker import Faker
 
 class HealthWorkerTestCase(TestCase):
@@ -14,20 +12,18 @@ class HealthWorkerTestCase(TestCase):
         phone_number2 = self.fake.phone_number()
 
         worker1 = HealthWorker(
-            first_name="John",
-            last_name="Doe",
+            first_name="Abdullahi",
+            last_name="Ali",
             phone_number=phone_number1,
-            location="Borama",
-            hospital="Mogadishu Hospital",
+            hospital="Digfeer Hospital",
         )
         worker1.save()
 
         worker2 = HealthWorker(
-            first_name="Diana",
-            last_name="Owiti",
+            first_name="Fatima",
+            last_name="Hassan",
             phone_number=phone_number2,
-            location="Borama",
-            hospital="Mogadishu Hospital",
+            hospital="Medina Hospital",
         )
         worker2.save()
 
