@@ -50,3 +50,39 @@
 #         )
 #         response = self.client.delete(f'/api/immunization-records/{immunization_record.id}/')
 #         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+from django.test import TestCase
+from rest_framework.test import APIClient
+from rest_framework import status
+from django.urls import reverse
+from Immunization_Record.models import Immunization_Record
+
+class ImmunizationAPITestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.list_url = reverse('immunization_record_list_view')  # Replace with your actual view name
+        self.detail_url = reverse('immunization_record_detail_view', args=[1])  
+
+    def test_get_immunization_record_list(self):
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_immunization_record(self):
+        data = {
+            # Data for creating a new record
+        }
+        response = self.client.post(self.list_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_get_immunization_record_detail(self):
+        response = self.client.get(self.detail_url)
+
+    def test_update_immunization_record(self):
+        data = {
+            #data for updating the record
+        }
+        response = self.client.put(self.detail_url, data, format='json')
+
+    def test_delete_immunization_record(self):
+        response = self.client.delete(self.detail_url)
+        # self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
