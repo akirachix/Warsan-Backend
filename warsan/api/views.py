@@ -82,13 +82,17 @@ class HealthWorkerDetailView(generics.RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
     def put(self, request, *args, **kwargs):
-        # Handle the PUT request to update a HealthWorker object
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data)
+
         if serializer.is_valid():
+            # Check if the phone number already exists for another health worker
+            phone_number = serializer.validated_data.get('phone_number')
+            if HealthWorker.objects.exclude(pk=instance.pk).filter(phone_number=phone_number).exists():
+                return Response({'phone_number': ['Phone number already exists for another health worker.']}, status=status.HTTP_400_BAD_REQUEST)
+            
             serializer.save()
             return Response(serializer.data)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
