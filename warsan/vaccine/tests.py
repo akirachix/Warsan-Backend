@@ -23,7 +23,7 @@ class VaccineModelTestCase(TestCase):
         )
 
     def test_vaccine_str_method(self):
-        # Test the __str__ method of the Vaccine model
+        # Test the __str__ method
         vaccine1 = Vaccine.objects.get(name="DPT Dose 3")
         vaccine2 = Vaccine.objects.get(name="Polio Dose 4")
         self.assertEqual(str(vaccine1), "DPT Dose 3")

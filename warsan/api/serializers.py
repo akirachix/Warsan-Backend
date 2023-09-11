@@ -5,3 +5,4 @@ class VaccineSerializer(serializers.ModelSerializer):
     class Meta:
         model=Vaccine
         fields=("__all__")
+
