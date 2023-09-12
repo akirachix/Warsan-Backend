@@ -1,45 +1,72 @@
 from django.test import TestCase
-from django.urls import reverse
+from rest_framework.test import APIClient  # Import APIClient
 from child.models import Child, Guardian
-from faker import Faker
 
 class ChildModelTestCase(TestCase):
     def setUp(self):
-        self.fake = Faker()
+        self.guardian = Guardian.objects.create(
+            first_name='John',
+            last_name='Doe',
+            location='Test Location',
+            phone_number='+1234567890'
+        )
+        self.child = Child.objects.create(
+            first_name='Alice',
+            last_name='Doe',
+            date_of_birth='2022-01-01',
+            gender='F',
+            guardian=self.guardian
+        )
 
-    def test_child_model_str_representation(self):
-        guardian = Guardian.objects.create(
-            first_name=self.fake.first_name(),
-            last_name=self.fake.last_name(),
-            location=self.fake.city(),
-            phone_number=self.fake.phone_number()
-        )
-        child = Child.objects.create(
-            first_name=self.fake.first_name(),
-            last_name=self.fake.last_name(),
-            date_of_birth=self.fake.date_of_birth(),
-            gender=self.fake.random_element(elements=('M', 'F')),
-            guardian=guardian,
-        )
-        expected_str = f"{child.first_name} {child.last_name} (Child of {guardian.first_name} {guardian.last_name})"
-        self.assertEqual(str(child), expected_str)
+    def test_child_creation(self):
+        self.assertEqual(self.child.first_name, 'Alice')
+        self.assertEqual(self.child.last_name, 'Doe')
+        self.assertEqual(str(self.child), 'Alice Doe (Child of John Doe)')
 
 class GuardianModelTestCase(TestCase):
     def setUp(self):
-        self.fake = Faker()
+        self.client = APIClient()  # Create an APIClient instance
+        self.guardian_data = {
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'location': 'Test Location',
+            'phone_number': '+1234567890'
+        }
+        self.guardian = Guardian.objects.create(**self.guardian_data)
 
-    def test_guardian_model_str_representation(self):
-        guardian = Guardian.objects.create(
-            first_name=self.fake.first_name(),
-            last_name=self.fake.last_name(),
-            location=self.fake.city(),
-            phone_number=self.fake.phone_number()
+    def test_guardian_creation(self):
+        self.assertEqual(self.guardian.first_name, 'John')
+        self.assertEqual(self.guardian.last_name, 'Doe')
+        self.assertEqual(self.guardian.location, 'Test Location')
+        self.assertEqual(str(self.guardian), 'John Doe')
+
+    def test_register_child(self):
+        child_data = {
+            'first_name': 'Alice',
+            'last_name': 'Doe',
+            'date_of_birth': '2022-01-01',
+            'gender': 'F',
+            'guardian': self.guardian
+        }
+        response = self.client.post('/api/children/', child_data, format='json')
+        self.assertEqual(response.status_code, 201)
+
+    def test_get_children(self):
+        child1 = Child.objects.create(
+            first_name='Alice',
+            last_name='Doe',
+            date_of_birth='2022-01-01',
+            gender='F',
+            guardian=self.guardian
         )
-        expected_str = f"{guardian.first_name} {guardian.last_name}"
-        self.assertEqual(str(guardian), expected_str)
-
-
-
-# Print the values assigned to the "gender" field
-print(Child._meta.get_field('gender').default)
-print(Child._meta.get_field('gender').null)
+        child2 = Child.objects.create(
+            first_name='Bob',
+            last_name='Doe',
+            date_of_birth='2023-02-02',
+            gender='M',
+            guardian=self.guardian
+        )
+        children = self.guardian.children.all()
+        self.assertEqual(children.count(), 2)
+        self.assertIn(child1, children)
+        self.assertIn(child2, children)

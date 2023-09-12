@@ -10,6 +10,7 @@ GENDER_CHOICES = (
 
 class Child(models.Model):
     first_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
