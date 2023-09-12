@@ -1,4 +1,4 @@
-# child/models.py
+
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -10,7 +10,7 @@ GENDER_CHOICES = (
 
 class Child(models.Model):
     first_name = models.CharField(max_length=50)
-    first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
@@ -20,9 +20,8 @@ class Child(models.Model):
         return f"{self.first_name} {self.last_name} (Child of {self.guardian})"
 
 
-# guardian/models.py
 from django.db import models
-from child.models import Child  # Import Child model without issues
+from child.models import Child  
 
 GENDER_CHOICES = (
     ('M', 'Male'),
@@ -33,8 +32,8 @@ GENDER_CHOICES = (
 class Guardian(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
-    # gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     phone_number = PhoneNumberField(unique=True, region='IR')
     
 

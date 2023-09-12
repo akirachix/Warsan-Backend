@@ -5,7 +5,7 @@ from child.models import Child, Guardian
 from .serializers import ChildSerializer, GuardianSerializer
 
 def test_create_guardian(self):
-    serialized_guardian = GuardianSerializer(data=self.guardian_data)  # Create a serializer instance
+    serialized_guardian = GuardianSerializer(data=self.guardian_data)  
     if serialized_guardian.is_valid():
         serialized_guardian.save()
         response = self.client.post('/api/guardians/', self.guardian_data, format='json')
@@ -13,7 +13,6 @@ def test_create_guardian(self):
     else:
         self.fail(f"Guardian data is not valid: {serialized_guardian.errors}")
 
-    # Rest of your test methods...
 
 class ChildAPITests(TestCase):
     def setUp(self):
@@ -21,4 +20,4 @@ class ChildAPITests(TestCase):
         self.child_data = {'first_name': 'Child 1', 'age': 5}
         self.child = Child.objects.create(first_name='Child 2', age=7)
 
-    # Rest of your test methods...
+    
