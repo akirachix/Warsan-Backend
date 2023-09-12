@@ -3,8 +3,8 @@ from .models import Child, Guardian
 
 @admin.register(Child)
 class ChildAdmin(admin.ModelAdmin):
-    list_display = ('first_name','middle_name' ,'last_name' ,'date_of_birth', 'gender', 'guardian')
+    list_display = ('first_name', 'last_name' ,'date_of_birth', 'gender', 'guardian')
 
 @admin.register(Guardian)
 class GuardianAdmin(admin.ModelAdmin):
-    list_display = ('first_name','middle_name,' 'last_name', 'location', 'phone_number')
+    list_display = ('first_name', 'last_name', 'location', 'phone_number')

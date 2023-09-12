@@ -10,7 +10,7 @@ GENDER_CHOICES = (
 
 class Child(models.Model):
     first_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
@@ -18,6 +18,7 @@ class Child(models.Model):
    
     def __str__(self):
         return f"{self.first_name} {self.last_name} (Child of {self.guardian})"
+
 
 
 from django.db import models
@@ -32,20 +33,16 @@ GENDER_CHOICES = (
 class Guardian(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    middle_name = models.CharField(max_length=50)
     location = models.CharField(max_length=100)
     phone_number = PhoneNumberField(unique=True, region='IR')
-    
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def register_child(self, first_name, last_name, date_of_birth, gender):
+    def register_child(self):
         child = Child.objects.create(
-            first_name=first_name,
-            last_name=last_name,
-            date_of_birth=date_of_birth,
-            gender=gender,
+            first_name=self.first_name,
+            last_name=self.last_name,
             guardian=self,
         )
         return child
