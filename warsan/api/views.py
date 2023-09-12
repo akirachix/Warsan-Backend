@@ -8,7 +8,7 @@ from .serializers import LocationSerializer
 # Create your views here.
 
 
- # List of all locations,create,update or delete a new location.
+ # List of all locations,create new location.
 class LocationListView(APIView):
         
     def get(self, request):
@@ -23,72 +23,44 @@ class LocationListView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def put(self, request, id):
-        try:
-            location = Location.objects.get(id=id)
-        except Location.DoesNotExist:
-            return Response("Location not found", status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = LocationSerializer(location, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request,id):
-        try:
-            location = Location.objects.get(id=id)
-        except Location.DoesNotExist:
-            return Response("Location not found", status=status.HTTP_404_NOT_FOUND)
-        
-        location.delete()
-        return Response("Location deleted", status=status.HTTP_204_NO_CONTENT)
-
-
- # Retrieve, update, or delete a location.
+ # Retrieve, update, or delete a location by id.
 class LocationDetailView(APIView):
-    
-    def get(self, request, id):
+    def perform_crud_operations(self, request, id, operation):
         try:
             location = Location.objects.get(id=id)
+            if operation == 'get':
+                serializer = LocationSerializer(location)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            elif operation == 'put':
+                serializer = LocationSerializer(location, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            elif operation == 'patch':
+                serializer = LocationSerializer(location, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            elif operation == 'delete':
+                location.delete()
+                return Response("Location deleted", status=status.HTTP_204_NO_CONTENT)
         except Location.DoesNotExist:
             return Response("Location not found", status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = LocationSerializer(location)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get(self, request, id):
+        return self.perform_crud_operations(request, id, 'get')
 
     def put(self, request, id):
-        try:
-            location = Location.objects.get(id=id)
-        except Location.DoesNotExist:
-            return Response("Location not found", status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = LocationSerializer(location, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return self.perform_crud_operations(request, id, 'put')
 
     def patch(self, request, id):
-        try:
-            location = Location.objects.get(id=id)
-        except Location.DoesNotExist:
-            return Response("Location not found", status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = LocationSerializer(location, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return self.perform_crud_operations(request, id, 'patch')
 
     def delete(self, request, id):
-        try:
-            location = Location.objects.get(id=id)
-        except Location.DoesNotExist:
-            return Response("Location not found", status=status.HTTP_404_NOT_FOUND)
-        
-        location.delete()
-        return Response("Location deleted", status=status.HTTP_204_NO_CONTENT)
+        return self.perform_crud_operations(request, id, 'delete')
 
  # List of all states. 
 class StateListView(APIView):
