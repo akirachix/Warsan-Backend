@@ -18,31 +18,33 @@ class GuardianList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class GuardianDetail(APIView):
-    def get_object(self, pk):
+    def handle_guardian_operations(self, request, pk, operation):
         try:
-            return Guardian.objects.get(pk=pk)
+            guardian = Guardian.objects.get(pk=pk)
+            if operation == 'get':
+                serializer = GuardianSerializer(guardian)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            elif operation == 'put':
+                serializer = GuardianSerializer(guardian, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            elif operation == 'delete':
+                guardian.delete()
+                return Response("Guardian deleted", status=status.HTTP_204_NO_CONTENT)
         except Guardian.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response("Guardian not found", status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk, format=None):
-        guardian = self.get_object(pk)
-        serializer = GuardianSerializer(guardian)
-        return Response(serializer.data)
+        return self.handle_guardian_operations(request, pk, 'get')
 
     def put(self, request, pk, format=None):
-        guardian = self.get_object(pk)
-        serializer = GuardianSerializer(guardian, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return self.handle_guardian_operations(request, pk, 'put')
 
     def delete(self, request, pk, format=None):
-        guardian = self.get_object(pk)
-        guardian.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return self.handle_guardian_operations(request, pk, 'delete')
 
 class ChildList(APIView):
     def get(self, request, format=None):
@@ -56,28 +58,30 @@ class ChildList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class ChildDetail(APIView):
-    def get_object(self, pk):
+    def handle_child_operations(self, request, pk, operation):
         try:
-            return Child.objects.get(pk=pk)
+            child = Child.objects.get(pk=pk)
+            if operation == 'get':
+                serializer = ChildSerializer(child)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            elif operation == 'put':
+                serializer = ChildSerializer(child, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            elif operation == 'delete':
+                child.delete()
+                return Response("Child deleted", status=status.HTTP_204_NO_CONTENT)
         except Child.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response("Child not found", status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk, format=None):
-        child = self.get_object(pk)
-        serializer = ChildSerializer(child)
-        return Response(serializer.data)
+        return self.handle_child_operations(request, pk, 'get')
 
     def put(self, request, pk, format=None):
-        child = self.get_object(pk)
-        serializer = ChildSerializer(child, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return self.handle_child_operations(request, pk, 'put')
 
     def delete(self, request, pk, format=None):
-        child = self.get_object(pk)
-        child.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return self.handle_child_operations(request, pk, 'delete')

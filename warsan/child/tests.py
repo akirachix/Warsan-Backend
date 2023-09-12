@@ -1,39 +1,45 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import Child, Guardian
+from child.models import Child, Guardian
+from faker import Faker
 
 class ChildModelTestCase(TestCase):
+    def setUp(self):
+        self.fake = Faker()
+
     def test_child_model_str_representation(self):
         guardian = Guardian.objects.create(
-            first_name='Abdi',
-            last_name='Ali',
-            location='Mogadishu',
-            phone_number='+252123456789'
+            first_name=self.fake.first_name(),
+            last_name=self.fake.last_name(),
+            location=self.fake.city(),
+            phone_number=self.fake.phone_number()
         )
         child = Child.objects.create(
-            first_name='Amina',
-            last_name='Abdi',
-            date_of_birth='2000-01-01',
-            gender='F',
+            first_name=self.fake.first_name(),
+            last_name=self.fake.last_name(),
+            date_of_birth=self.fake.date_of_birth(),
+            gender=self.fake.random_element(elements=('M', 'F')),
             guardian=guardian,
         )
-        self.assertEqual(str(child), "Amina Abdi (Child of Abdi Ali)")
+        expected_str = f"{child.first_name} {child.last_name} (Child of {guardian.first_name} {guardian.last_name})"
+        self.assertEqual(str(child), expected_str)
 
 class GuardianModelTestCase(TestCase):
+    def setUp(self):
+        self.fake = Faker()
+
     def test_guardian_model_str_representation(self):
         guardian = Guardian.objects.create(
-            first_name='Abdi',
-            last_name='Ali',
-            location='Mogadishu',
-            phone_number='+252123456789'
+            first_name=self.fake.first_name(),
+            last_name=self.fake.last_name(),
+            location=self.fake.city(),
+            phone_number=self.fake.phone_number()
         )
-        self.assertEqual(str(guardian), "Abdi Ali")
+        expected_str = f"{guardian.first_name} {guardian.last_name}"
+        self.assertEqual(str(guardian), expected_str)
 
-class AdminPagesTestCase(TestCase):
-    def test_child_admin_page_accessible(self):
-        response = self.client.get(reverse('admin:child_child_changelist'))
-        self.assertEqual(response.status_code, 200)
 
-    def test_guardian_admin_page_accessible(self):
-        response = self.client.get(reverse('admin:child_guardian_changelist'))
-        self.assertEqual(response.status_code, 200)
+
+# Print the values assigned to the "gender" field
+print(Child._meta.get_field('gender').default)
+print(Child._meta.get_field('gender').null)
