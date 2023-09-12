@@ -69,12 +69,12 @@ class StateListView(APIView):
         states = Location.objects.values_list('state', flat=True).distinct()
         return Response(states, status=status.HTTP_200_OK)
     
- # List of all regions.
-class RegionListView(APIView):
+#  # List of all regions.
+# class RegionListView(APIView):
      
-    def get(self, request):
-        regions = Location.objects.values_list('region', flat=True).distinct()
-        return Response(regions, status=status.HTTP_200_OK)
+#     def get(self, request):
+#         regions = Location.objects.values_list('region', flat=True).distinct()
+#         return Response(regions, status=status.HTTP_200_OK)
     
     # List of all regions under a specific state.
 class SpecificRegionListView(APIView):

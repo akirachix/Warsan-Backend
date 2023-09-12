@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'warsan.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'warsan',
         'USER': 'warsanuser',         # Replace with the PostgreSQL username you created
         'PASSWORD': 'warsanpass',     # Replace with the PostgreSQL password you created
         'HOST': 'localhost',          # Use 'localhost' if the database is on the same machine
