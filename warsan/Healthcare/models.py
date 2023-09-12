@@ -7,7 +7,6 @@ class HealthWorker(models.Model):
     last_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     phone_number = PhoneNumberField(unique=True, region='IR')  
-    # location = models.CharField(max_length=100)
     hospital = models.CharField(max_length=100)
 
     def __str__(self):

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'rest_framework', 
     'drf_yasg', 
-    'Registration',
+    'Registrations',
+
 
     
     
@@ -129,6 +130,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 
 # Static files (CSS, JavaScript, Images)

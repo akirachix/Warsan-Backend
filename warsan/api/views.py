@@ -92,3 +92,78 @@ class HealthWorkerDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# views.py
+from django.contrib.auth import login, logout, authenticate
+from rest_framework.decorators import api_view
+from Registrations.models import UserProfile
+from .serializers import UserProfileSerializer, UserRegistrationSerializer
+
+@api_view(['POST'])
+def register_user(request):
+    serializer = UserRegistrationSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+        login(request, user)
+        return Response({'message': 'User registered successfully.'}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def user_login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(username=username, password=password)
+    if user:
+        login(request, user)
+        return Response({'message': 'User logged in successfully.'})
+    return Response({'message': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+def user_logout(request):
+    logout(request)
+    return Response({'message': 'User logged out successfully.'})
+
+@api_view(['GET'])
+def list_users(request):
+    # Retrieve all user profiles
+    user_profiles = UserProfile.objects.all()
+
+    # Serialize the user profiles
+    serializer = UserProfileSerializer(user_profiles, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+@api_view(['GET'])
+def get_user_list(request):
+    # Retrieve all user profiles
+    user_profiles = UserProfile.objects.all()
+
+    # Serialize the user profiles
+    serializer = UserProfileSerializer(user_profiles, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def edit_user(request, user_id):
+    try:
+        user_profile = UserProfile.objects.get(id=user_id)
+    except UserProfile.DoesNotExist:
+        return Response({'message': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = UserRegistrationSerializer(user_profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'User updated successfully.'})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_user(request, user_id):
+    try:
+        user_profile = UserProfile.objects.get(id=user_id)
+    except UserProfile.DoesNotExist:
+        return Response({'message': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        user_profile.delete()
+        logout(request)
+        return Response({'message': 'User deleted successfully.'})

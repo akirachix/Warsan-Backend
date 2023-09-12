@@ -1,4 +1,3 @@
-# test.py
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -6,7 +5,6 @@ from django.urls import reverse
 from django.db.models import Q
 from Healthcare.models import HealthWorker
 from .serializers import HealthWorkerSerializer
-
 
 
 class HealthWorkerAPITest(TestCase):
@@ -22,7 +20,6 @@ class HealthWorkerAPITest(TestCase):
             "phone_number": "+252615152078"
         }
         response = self.client.post(reverse("healthworker-list"), data, format="json")
-        print(response.content) 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(HealthWorker.objects.count(), 1)
 
@@ -76,7 +73,6 @@ class HealthWorkerAPITest(TestCase):
         }
 
         response = self.client.put(reverse("healthworker-detail", args=[health_worker.pk]), updated_data, format="json")
-        print(response.content) 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Verify that the health worker's data has been updated in the database
@@ -100,4 +96,3 @@ class HealthWorkerAPITest(TestCase):
         response = self.client.delete(reverse("healthworker-detail", args=[health_worker.pk]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(HealthWorker.objects.count(), 0)
-
