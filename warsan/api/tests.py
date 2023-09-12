@@ -7,7 +7,7 @@ from .serializers import LocationSerializer
 
 class LocationViewTests(TestCase):
     def setUp(self):
-        self.client = APIClient()  # Create an API client
+        self.client = APIClient()  
         self.location_data = {
             'state': 'Somaliland',
             'region': 'Awdal',
@@ -25,7 +25,7 @@ def test_list_locations(self):
 def test_create_location(self):
     response = self.client.post('http://127.0.0.1:8000/api/location/', self.location_data)
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(Location.objects.count(), 2)  # One from setUp and one created in the test
+    self.assertEqual(Location.objects.count(), 2)  
     self.assertEqual(Location.objects.last().state, 'Test State')
 
 def test_get_location_detail(self):
