@@ -49,10 +49,7 @@ INSTALLED_APPS = [
     'registration',
     'rest_framework.authtoken',
     'drf_yasg',
-    "vaccine",
-
-
-    
+    "vaccine",    
 ]
 
 
