@@ -1,10 +1,8 @@
-# child/api/urls.py
-from django.urls import path
-from . import views
 
-urlpatterns = [ 
-    path('guardians/', views.GuardianList.as_view(), name='guardian-list'),
-    path('guardians/<int:pk>/', views.GuardianDetail.as_view(), name='guardian-detail'),
-    path('children/', views.ChildList.as_view(), name='child-list'),
-    path('children/<int:pk>/', views.ChildDetail.as_view(), name='child-detail'),
+from django.urls import path
+from .views import VaccineListView, VaccineDetailView
+
+urlpatterns=[
+    path('vaccine/',VaccineListView.as_view(),name='vaccine_list_view'),
+    path('vaccine/<int:pk>/',VaccineDetailView.as_view(),name='vaccine_detail_view')
 ]
