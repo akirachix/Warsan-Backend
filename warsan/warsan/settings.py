@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+
 from pathlib import Path
-import os
+
 
 
 
@@ -40,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'phonenumber_field',
     'registration',
-    'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
     "vaccine",
@@ -82,10 +83,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'warsan.wsgi.application'
 
-
+from decouple import config
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 
 import os
 
@@ -96,8 +96,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
-
+        'PORT': os.environ.get('DB_PORT'
     }
 }
 
@@ -168,6 +167,14 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
 
 
 # Static files (CSS, JavaScript, Images)

@@ -1,6 +1,9 @@
 
 from django.urls import path
-from . import views
+from .views import Immunization_recordView,ImmunizationDetailView
+from .views import VaccineListView, VaccineDetailView
+
+
 
 urlpatterns = [
     path('ngo/signup/', views.ngo_signup, name='ngo-signup'),
@@ -13,13 +16,11 @@ urlpatterns = [
     path('healthworker/logout/', views.healthworker_logout, name='healthworker-logout'),
     path('healthworker/login/', views.healthworker_login, name='healthworker-login'),
     path('ngo/login/', views.ngo_login, name='ngo-login'),
-]
-
-from django.urls import path
-from .views import VaccineListView, VaccineDetailView
-
-urlpatterns=[
     path('vaccine/',VaccineListView.as_view(),name='vaccine_list_view'),
     path('vaccine/<int:pk>/',VaccineDetailView.as_view(),name='vaccine_detail_view')
+    path('immunization_record/', Immunization_recordView.as_view(), name='immunization_record_list_view'),
+    path('immunization_record/<int:pk>/', ImmunizationDetailView.as_view(), name='immunization_record_detail_view'),  
 ]
+
+
 
