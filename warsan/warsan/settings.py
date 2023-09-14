@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -60,7 +63,7 @@ ROOT_URLCONF = 'warsan.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],  # This line specifies the template directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,16 +82,17 @@ WSGI_APPLICATION = 'warsan.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'warsan',
-        'USER': 'warsanuser',         # Replace with the PostgreSQL username you created
-        'PASSWORD': 'warsanpass',     # Replace with the PostgreSQL password you created
-        'HOST': 'localhost',          # Use 'localhost' if the database is on the same machine
-        'PORT': '5432',                   # Leave empty to use the default PostgreSQL port (5432)
-    }
-}
+        'ENGINE': os.environ.get('DB_ENGINE'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+    }}
 
 
 # Password validation
@@ -126,6 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
