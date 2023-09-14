@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from child.models import Guardian
-from child.models import Child
+from registration.models import CustomUser, Healthworker
 
-class GuardianSerializer(serializers.ModelSerializer):
+class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Guardian
-        fields = '__all__'
+        model = CustomUser
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
-class ChildSerializer(serializers.ModelSerializer):
+class HealthworkerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Child
-        fields = '__all__'
+        model = Healthworker
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'phone_number', 'location', 'created_by')
+
