@@ -1,7 +1,11 @@
 
+
 from django.urls import path
 from .views import Immunization_recordView,ImmunizationDetailView
 from .views import VaccineListView, VaccineDetailView
+from .views import LocationListView,StateListView,SpecificRegionListView,SpecificDistrictListView,LocationDetailView,LocationListView
+
+
 
 
 
@@ -19,7 +23,10 @@ urlpatterns = [
     path('vaccine/',VaccineListView.as_view(),name='vaccine_list_view'),
     path('vaccine/<int:pk>/',VaccineDetailView.as_view(),name='vaccine_detail_view')
     path('immunization_record/', Immunization_recordView.as_view(), name='immunization_record_list_view'),
-    path('immunization_record/<int:pk>/', ImmunizationDetailView.as_view(), name='immunization_record_detail_view'),  
+    path('immunization_record/<int:pk>/', ImmunizationDetailView.as_view(), name='immunization_record_detail_view'), 
+    path("location/",LocationListView.as_view(), name="location_list_view"),
+    path("location/<int:id>",LocationDetailView.as_view(), name="location_detail_view"),
+    path("states/",StateListView.as_view(), name="state_list_view"),
 ]
 
 

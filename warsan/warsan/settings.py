@@ -20,6 +20,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -41,15 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'location',
+    'api',
+    'rest_framework',
     'phonenumber_field',
     'registration',
     'rest_framework.authtoken',
     'drf_yasg',
-    "vaccine",
-    "rest_framework",
-
-    
+    "vaccine",    
 ]
 
 
@@ -68,7 +68,9 @@ ROOT_URLCONF = 'warsan.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],  # This line specifies the template directory
+        'DIRS': [os.path.join(BASE_DIR , "templates")],
+
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,9 +98,11 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'
+        'PORT': os.environ.get('DB_PORT'),
+
     }
-}
+} 
+
 
 #swagger settings
 
@@ -129,6 +133,7 @@ REST_FRAMEWORK = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
