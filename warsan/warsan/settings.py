@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Healthcare',
     'phonenumber_field',
-    'rest_framework', 
-    'drf_yasg', 
-    'Registrations',
+    'registration',
+    'rest_framework',
+    'rest_framework.authtoken',
+
+
+
 
 
     

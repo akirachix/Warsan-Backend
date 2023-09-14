@@ -1,26 +1,15 @@
-# healthCare/urls.py
-
 from django.urls import path
-from .views import HealthWorkerListView,HealthWorkerDetailView, HealthWorkerFilterView, HealthWorkerSearchView
-from .views import register_user, user_login, user_logout, list_users, get_user_list,  edit_user,delete_user
-
-
-
-
+from . import views
 
 urlpatterns = [
-    path('healthworkers/', HealthWorkerListView.as_view(), name='healthworker-list'),
-    path('healthworkers/<int:pk>/', HealthWorkerDetailView.as_view(), name='healthworker-detail'),
-    path('healthworkers/search/', HealthWorkerSearchView.as_view(), name='healthworker-search'),
-    path('healthworkers/filter/', HealthWorkerFilterView.as_view(), name='healthworker-filter'),
-    path('api/list-users/', list_users, name='list_users'),
-
-    path('register/', register_user, name='register'),
-    path('login/', user_login, name='login'),
-    path('logout/', user_logout, name='logout'),
-    path('api/list-users/', get_user_list, name='get_user_list'),
-    path('edit-user/<int:user_id>/', edit_user, name='edit_user'),
-    path('delete-user/<int:user_id>/',delete_user, name='delete_user'),
-
-
+    path('ngo/signup/', views.ngo_signup, name='ngo-signup'),
+    path('ngo/login/', views.ngo_login, name='ngo-login'),
+    path('ngo/logout/', views.ngo_logout, name='ngo-logout'),
+    path('healthworker/signup/', views.healthworker_signup, name='healthworker-signup'),
+    path('healthworker/login/', views.healthworker_login, name='healthworker-login'),
+    path('healthworker/logout/', views.healthworker_logout, name='healthworker-logout'),
+    path('customusers/', views.CustomUserList.as_view(), name='customuser-list'),
+    path('customusers/<int:pk>/', views.CustomUserDetail.as_view(), name='customuser-detail'),
+    path('healthworkers/', views.HealthworkerList.as_view(), name='healthworker-list'),
+    path('healthworkers/<int:pk>/', views.healthworker_detail, name='healthworker-detail'),
 ]
