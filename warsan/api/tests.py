@@ -1,3 +1,4 @@
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -48,3 +49,4 @@ class VaccineAPITestCase(APITestCase):
         url = reverse("vaccine_detail_view", args=[self.vaccine.pk])
         response = self.client.put(url, updated_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+

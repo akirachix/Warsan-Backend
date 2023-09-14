@@ -1,3 +1,4 @@
+
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -52,7 +53,6 @@ class VaccineDetailView(APIView):
 
     def delete(self, request, pk):
         return self.handle_vaccine_operations(request, pk, 'delete')
-
 
 
 
