@@ -10,3 +10,4 @@ class HealthworkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Healthworker
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'phone_number', 'location', 'created_by')
+
