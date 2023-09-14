@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import Child, Guardian
 
-# Create your views here.
+# You can add more views here as needed
+
