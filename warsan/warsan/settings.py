@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'registration',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_yasg',
 
 
 
@@ -93,6 +94,20 @@ DATABASES = {
         'HOST': 'localhost',          # Use 'localhost' if the database is on the same machine
         'PORT': '5432',                   # Leave empty to use the default PostgreSQL port (5432)
     }
+}
+
+
+#swagger settings
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        },
+    },
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
 }
 
 

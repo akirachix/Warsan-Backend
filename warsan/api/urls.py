@@ -12,4 +12,5 @@ urlpatterns = [
     path('customusers/<int:pk>/', views.CustomUserDetail.as_view(), name='customuser-detail'),
     path('healthworkers/', views.HealthworkerList.as_view(), name='healthworker-list'),
     path('healthworkers/<int:pk>/', views.healthworker_detail, name='healthworker-detail'),
+    
 ]
