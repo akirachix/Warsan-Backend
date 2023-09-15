@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 
 from pathlib import Path
+import os
 
 
 
@@ -49,7 +50,10 @@ INSTALLED_APPS = [
     'registration',
     'rest_framework.authtoken',
     'drf_yasg',
-    "vaccine",    
+    "vaccine",  
+    'child'  ,
+    'Immunization_Record',
+    
 ]
 
 
@@ -120,7 +124,6 @@ SWAGGER_SETTINGS = {
 
 
 
-    }}
 
 # 
 REST_FRAMEWORK = {

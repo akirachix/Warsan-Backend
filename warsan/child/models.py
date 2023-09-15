@@ -1,6 +1,7 @@
 
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from location.models import Location
 
 GENDER_CHOICES = (
     ('M', 'Male'),
@@ -33,7 +34,7 @@ GENDER_CHOICES = (
 class Guardian(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    location = models.CharField(max_length=100)
+    location = models.ManyToManyField(Location)
     phone_number = PhoneNumberField(unique=True, region='IR')
 
     def __str__(self):
@@ -49,3 +50,6 @@ class Guardian(models.Model):
 
     def get_children(self):
         return self.children.all()
+    
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
