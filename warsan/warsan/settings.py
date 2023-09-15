@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 
 from pathlib import Path
+import os
 
 
 
@@ -30,7 +31,7 @@ SECRET_KEY = 'django-insecure-!_=bta=x7@)fyu2u+=y3chh=ih925zx$m+^-=vhb0+yt4iovav
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -49,7 +50,10 @@ INSTALLED_APPS = [
     'registration',
     'rest_framework.authtoken',
     'drf_yasg',
-    "vaccine",    
+    "vaccine",  
+    'child'  ,
+    'Immunization_Record',
+    
 ]
 
 
@@ -120,7 +124,6 @@ SWAGGER_SETTINGS = {
 
 
 
-    }}
 
 # 
 REST_FRAMEWORK = {
