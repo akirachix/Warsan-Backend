@@ -89,7 +89,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'warsan.wsgi.application'
 
-# from decouple import config
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
