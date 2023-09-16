@@ -1,5 +1,4 @@
-# name: Django Build and Test CICD
-# on:
+# name: Django Build and Test
 
 #   push:
 #     branches:
