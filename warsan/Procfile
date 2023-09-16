@@ -1,5 +1,4 @@
-web: gunicorn warsan.wsgi
-
+web: gunicorn warsan.wsgi --log-file -
 
 
 
