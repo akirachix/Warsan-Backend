@@ -1,16 +1,4 @@
-# name: Django Build and Test CICD
-# on:
-
-#   push:
-#     branches:
-#       - main
-#       - dev
-#       - staging
-#   pull_request:
-#     branches:
-#       - main
-#       - dev
-#       - staging
+# name: Django Build and Test
 
 # jobs:
 #   test:
