@@ -320,7 +320,7 @@ def specific_district_list(request, state_name, region_name):
     districts = Location.objects.filter(state=state_name, region=region_name).values_list('district', flat=True).distinct()
     return Response(districts, status=status.HTTP_200_OK)
 
-# Views for Child and Guardian models (sample code)
+# Views for Child and Guardian models
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminOrReadOnly])
 def child_list(request):
@@ -409,7 +409,7 @@ def ngo_logout(request):
     logout(request)
     return Response({'message': 'NGO user logged out successfully'}, status=status.HTTP_200_OK)
 
-# Views for Child and Guardian models (sample code)
+# Views for Child and Guardian models
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminOrReadOnly])
 def child_list(request):
