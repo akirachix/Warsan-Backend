@@ -398,16 +398,18 @@ def guardian_detail(request, pk):
         guardian.delete()
         return Response("Guardian deleted", status=status.HTTP_204_NO_CONTENT)
 
-# Continue to define and implement other views as needed.
 @api_view(['POST'])
 @permission_classes([IsAdminOrNGO])
 def ngo_signup(request):
+    # Deserialize the request data using the modified serializer
     serializer = CustomUserSerializer(data=request.data)
     if serializer.is_valid():
+        # Create the user and set the password
         user = serializer.save()
         user.set_password(request.data.get('password'))
         user.save()
         return Response({'message': 'NGO user created successfully'}, status=status.HTTP_201_CREATED)
+    # If the serializer is not valid, return the errors
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -486,3 +488,4 @@ def guardian_detail(request, pk):
     elif request.method == 'DELETE':
         guardian.delete()
         return Response("Guardian deleted", status=status.HTTP_204_NO_CONTENT)
+# Api endpoints
