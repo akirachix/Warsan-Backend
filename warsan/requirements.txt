@@ -8,7 +8,7 @@ chardet==4.0.0
 click==8.0.3
 colorama==0.4.4
 cryptography==3.4.8
-# dbus-python==1.2.18
+dbus-python==1.2.18
 distro==1.7.0
 bcrypt==3.2.0
 Django==3.2.6
@@ -52,7 +52,7 @@ psycopg2-binary==2.9.7
 ptyprocess==0.7.0
 py==1.11.0
 pycodestyle==2.7.0
-# pycups==2.0.1
+pycups==2.0.1
 pyflakes==2.3.1
 PyJWT==2.3.0
 pymacaroons==0.13.0
