@@ -36,6 +36,8 @@ def location_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAdminOrNGO])
@@ -57,6 +59,8 @@ def location_detail(request, id):
     elif request.method == 'DELETE':
         location.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminOrNGO])
@@ -71,6 +75,9 @@ def immunization_record_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAdminOrNGO])
