@@ -1,2 +1,1 @@
 web: gunicorn warsan.wsgi --log-file -
-build: heroku/python@python-3.9.18 bin/start
