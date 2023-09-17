@@ -31,6 +31,8 @@ GENDER_CHOICES = (
     
 )
 
+
+
 class Guardian(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -38,7 +40,7 @@ class Guardian(models.Model):
     phone_number = PhoneNumberField(unique=True, region='IR')
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name } {self.last_name}"
 
     def register_child(self):
         child = Child.objects.create(

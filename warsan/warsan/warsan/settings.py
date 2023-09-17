@@ -89,23 +89,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'warsan.wsgi.application'
 
-from decouple import config
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-import os
-
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE'),
+        'ENGINE': "django.db.backends.postgresql",
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
-
     }
-} 
+}
+
+
 
 
 #swagger settings

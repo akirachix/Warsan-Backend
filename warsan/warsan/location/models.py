@@ -10,3 +10,6 @@ class Location(models.Model):
 
     def __str__(self):
         return self.district
+    
+    class Meta:
+        db_table = 'Location'
