@@ -1,1 +1,1 @@
-web: warsan/Procfile
+web: gunicorn warsan.wsgi --log-file -

@@ -1,9 +1,7 @@
 .env/
-__pycache__/
 myenv/
 /staticfiles/
-
-
+__pycache__/
 
 
 
