@@ -22,21 +22,22 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
 from child.models import Child, Guardian
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render
+
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminOrNGO])
 def location_list(request):
     if request.method == 'GET':
         locations = Location.objects.all()
-        serializer = LocationSerializer(locations, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return render(request, 'templates/location_list.html', {'locations': locations})
+
     elif request.method == 'POST':
         serializer = LocationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
     
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -154,7 +155,7 @@ def ngo_login(request):
 
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def vaccine_list(request):
     if request.method == 'GET':
         vaccines = Vaccine.objects.all()
@@ -168,7 +169,7 @@ def vaccine_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def vaccine_detail(request, id):
     try:
         vaccine = Vaccine.objects.get(id=id)
@@ -191,7 +192,7 @@ def vaccine_detail(request, id):
 
 # Views for CustomUser model
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def custom_user_list(request):
     if request.method == 'GET':
         custom_users = CustomUser.objects.all()
@@ -207,7 +208,7 @@ def custom_user_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def custom_user_detail(request, pk):
     try:
         custom_user = CustomUser.objects.get(pk=pk)
@@ -229,7 +230,7 @@ def custom_user_detail(request, pk):
 
 # Views for Healthworker model
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def healthworker_list(request):
     if request.method == 'GET':
         healthworkers = Healthworker.objects.all()
@@ -274,7 +275,7 @@ def healthworker_detail(request, pk):
 
 # Views for Vaccine model
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def vaccine_list(request):
     if request.method == 'GET':
         vaccines = Vaccine.objects.all()
@@ -288,7 +289,7 @@ def vaccine_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def vaccine_detail(request, id):
     try:
         vaccine = Vaccine.objects.get(id=id)
@@ -310,26 +311,26 @@ def vaccine_detail(request, id):
 
 # Views for State, Region, and District
 @api_view(['GET'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def state_list(request):
     states = Location.objects.values_list('state', flat=True).distinct()
     return Response(states, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def specific_region_list(request, state_name):
     regions = Location.objects.filter(state=state_name).values_list('region', flat=True).distinct()
     return Response(regions, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def specific_district_list(request, state_name, region_name):
     districts = Location.objects.filter(state=state_name, region=region_name).values_list('district', flat=True).distinct()
     return Response(districts, status=status.HTTP_200_OK)
 
 # Views for Child and Guardian models
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def child_list(request):
     if request.method == 'GET':
         children = Child.objects.all()
@@ -343,7 +344,7 @@ def child_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def child_detail(request, pk):
     try:
         child = Child.objects.get(pk=pk)
@@ -364,7 +365,7 @@ def child_detail(request, pk):
         return Response("Child deleted", status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def guardian_list(request):
     if request.method == 'GET':
         guardians = Guardian.objects.all()
@@ -378,7 +379,7 @@ def guardian_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def guardian_detail(request, pk):
     try:
         guardian = Guardian.objects.get(pk=pk)
@@ -420,7 +421,7 @@ def ngo_logout(request):
 
 # Views for Child and Guardian models
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def child_list(request):
     if request.method == 'GET':
         children = Child.objects.all()
@@ -434,7 +435,7 @@ def child_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def child_detail(request, pk):
     try:
         child = Child.objects.get(pk=pk)
@@ -455,7 +456,7 @@ def child_detail(request, pk):
         return Response("Child deleted", status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def guardian_list(request):
     if request.method == 'GET':
         guardians = Guardian.objects.all()
@@ -469,7 +470,7 @@ def guardian_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAdminOrReadOnly])
+@permission_classes([IsAdminOrNGO])
 def guardian_detail(request, pk):
     try:
         guardian = Guardian.objects.get(pk=pk)
