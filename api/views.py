@@ -130,15 +130,20 @@ def healthworker_logout(request):
 def healthworker_login(request):
     phone_number = request.data.get('phone_number')
     password = request.data.get('password')
-    user = Healthworker.objects.filter(phone_number=phone_number).first()
-    if user is not None and user.check_password(password):
-        login(request, user)
-        token = default_token_generator.make_token(user)
-        return Response({'token': token}, status=status.HTTP_200_OK)
-    elif user is None:
+
+    try:
+        user = Healthworker.objects.get(phone_number=phone_number)
+    except Healthworker.DoesNotExist:
         return Response({'message': 'User with this phone number does not exist'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    user = authenticate(request, username=user.username, password=password)
+
+    if user is not None:
+        token, created = Token.objects.get_or_create(user=user)
+        login(request, user) 
+        return Response({'token': token.key}, status=status.HTTP_200_OK)
     else:
-        return Response({'message': 'Invalid password'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
 @permission_classes([IsAdminOrNGO])
