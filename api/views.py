@@ -22,7 +22,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
 from child.models import Child, Guardian
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 
 @api_view(['GET', 'POST'])
@@ -92,6 +92,7 @@ def immunization_record_detail(request, pk):
         serializer = Immunization_RecordSerializer(immunization_record)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'PUT':
+        immunization_record = get_object_or_404(Immunization_Record, id=id)
         serializer = Immunization_RecordSerializer(immunization_record, data=request.data)
         if serializer.is_valid():
             serializer.save()
