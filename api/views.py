@@ -63,7 +63,7 @@ def location_detail(request, id):
     
     
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 @permission_classes([IsAdminOrNGO])
 def immunization_record_list(request):
     if request.method == 'GET':
@@ -80,7 +80,7 @@ def immunization_record_list(request):
     
     
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAdminOrNGO])
 def immunization_record_detail(request, pk):
     try:
@@ -168,7 +168,7 @@ def vaccine_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAdminOrNGO])
 def vaccine_detail(request, id):
     try:
@@ -191,7 +191,7 @@ def vaccine_detail(request, id):
 
 
 # Views for CustomUser model
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST',])
 @permission_classes([IsAdminOrNGO])
 def custom_user_list(request):
     if request.method == 'GET':
