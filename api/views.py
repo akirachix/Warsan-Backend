@@ -339,7 +339,7 @@ def specific_district_list(request, state_name, region_name):
 @permission_classes([IsAdminOrNGO])
 def child_list(request):
     if request.method == 'GET':
-        children = Child.objects.all()
+        children = Child.objects.filter(status='A')
         serializer = ChildSerializer(children, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -374,11 +374,11 @@ def child_detail(request, pk):
 @permission_classes([IsAdminOrNGO])
 def guardian_list(request):
     if request.method == 'GET':
-        guardians = Guardian.objects.all()
-        serializer = GuardianSerializer(guardians, many=True)
+        guardians = Guardian.objects.filter(status='A')
+        serializer = GuardianSerializer(guardians, many=True) 
         return Response(serializer.data)
     elif request.method == 'POST':
-        serializer = GuardianSerializer(data=request.data)
+        serializer = GuardianSerializer(data=request.data)  
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
