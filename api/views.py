@@ -22,7 +22,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
 from child.models import Child, Guardian
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 
 @api_view(['GET', 'POST'])
@@ -63,7 +63,7 @@ def location_detail(request, id):
     
     
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 @permission_classes([IsAdminOrNGO])
 def immunization_record_list(request):
     if request.method == 'GET':
@@ -80,7 +80,7 @@ def immunization_record_list(request):
     
     
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAdminOrNGO])
 def immunization_record_detail(request, pk):
     try:
@@ -92,6 +92,7 @@ def immunization_record_detail(request, pk):
         serializer = Immunization_RecordSerializer(immunization_record)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'PUT':
+        immunization_record = get_object_or_404(Immunization_Record, id=id)
         serializer = Immunization_RecordSerializer(immunization_record, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -130,15 +131,20 @@ def healthworker_logout(request):
 def healthworker_login(request):
     phone_number = request.data.get('phone_number')
     password = request.data.get('password')
-    user = Healthworker.objects.filter(phone_number=phone_number).first()
-    if user is not None and user.check_password(password):
-        login(request, user)
-        token = default_token_generator.make_token(user)
-        return Response({'token': token}, status=status.HTTP_200_OK)
-    elif user is None:
+
+    try:
+        user = Healthworker.objects.get(phone_number=phone_number)
+    except Healthworker.DoesNotExist:
         return Response({'message': 'User with this phone number does not exist'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    user = authenticate(request, username=user.username, password=password)
+
+    if user is not None:
+        token, created = Token.objects.get_or_create(user=user)
+        login(request, user) 
+        return Response({'token': token.key}, status=status.HTTP_200_OK)
     else:
-        return Response({'message': 'Invalid password'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
 @permission_classes([IsAdminOrNGO])
@@ -168,7 +174,7 @@ def vaccine_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAdminOrNGO])
 def vaccine_detail(request, id):
     try:
@@ -191,7 +197,7 @@ def vaccine_detail(request, id):
 
 
 # Views for CustomUser model
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST',])
 @permission_classes([IsAdminOrNGO])
 def custom_user_list(request):
     if request.method == 'GET':
@@ -333,7 +339,7 @@ def specific_district_list(request, state_name, region_name):
 @permission_classes([IsAdminOrNGO])
 def child_list(request):
     if request.method == 'GET':
-        children = Child.objects.all()
+        children = Child.objects.filter(status='A')
         serializer = ChildSerializer(children, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -368,11 +374,11 @@ def child_detail(request, pk):
 @permission_classes([IsAdminOrNGO])
 def guardian_list(request):
     if request.method == 'GET':
-        guardians = Guardian.objects.all()
-        serializer = GuardianSerializer(guardians, many=True)
+        guardians = Guardian.objects.filter(status='A')
+        serializer = GuardianSerializer(guardians, many=True) 
         return Response(serializer.data)
     elif request.method == 'POST':
-        serializer = GuardianSerializer(data=request.data)
+        serializer = GuardianSerializer(data=request.data)  
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
