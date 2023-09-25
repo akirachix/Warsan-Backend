@@ -2,7 +2,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from location.models import Location
-from api.views import child_detail, guardian_detail
+
 
 GENDER_CHOICES = (
     ('M', 'Male'),
@@ -15,7 +15,7 @@ STATUS_CHOICES = (
 )
 
 class Child(models.Model):
-    first_name = models.CharField(max_length=50)
+
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
@@ -24,7 +24,7 @@ class Child(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A') 
    
 
-    def  deactivate_child(self):
+    def  deactivate_child(self,child_detail):
         child = Child.objects.get(pk=child_detail)
         child.status = 'I'
         child.save()
@@ -41,12 +41,12 @@ from child.models import Child
 class Guardian(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    location = models.OneToOneField(Location, on_delete=models.CASCADE)
+    location = models.OneToOneField(Location, on_delete=models.SET_NULL,null=True)
     phone_number = PhoneNumberField(unique=True, region='IR')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A') 
 
 
-    def  deactivate_guardian(self):
+    def  deactivate_guardian(self,guardian_detail):
         Guardian = Child.objects.get(pk=guardian_detail)
         Guardian.status = 'I'
         Guardian.save()

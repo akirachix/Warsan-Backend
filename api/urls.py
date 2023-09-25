@@ -26,5 +26,6 @@ urlpatterns = [
     path('children/<int:pk>/', views.child_detail, name='child-detail'),
     path('guardians/', views.guardian_list, name='guardian-list'),
     path('guardians/<int:pk>/', views.guardian_detail, name='guardian-detail'),
-
+    path('immunization-status/', views.immunization_status_api_view, name='immunization-status'),
+    path('child-vaccine-count/<int:child_id>/', views.child_vaccines_count_api_view, name='child-vaccine-count'),
 ]
