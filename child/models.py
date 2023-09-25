@@ -20,7 +20,6 @@ class Child(models.Model):
     last_name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    guardian = models.ForeignKey('Guardian', on_delete=models.CASCADE, related_name='children')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A') 
    
 
@@ -29,7 +28,7 @@ class Child(models.Model):
         child.status = 'I'
         child.save()
     def __str__(self):
-        return f"{self.first_name} {self.last_name} (Child of {self.guardian})"
+        return f"{self.first_name} {self.last_name} )"
 
 
 
@@ -41,10 +40,10 @@ from child.models import Child
 class Guardian(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    location = models.OneToOneField(Location, on_delete=models.SET_NULL,null=True)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL,null=True)
     phone_number = PhoneNumberField(unique=True, region='IR')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A') 
-
+    child = models.ForeignKey(Child, on_delete=models.SET_NULL,null=True)
 
     def  deactivate_guardian(self,guardian_detail):
         Guardian = Child.objects.get(pk=guardian_detail)
@@ -66,4 +65,4 @@ class Guardian(models.Model):
         return self.children.all()
     
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name} (Guardian of {self.child}"

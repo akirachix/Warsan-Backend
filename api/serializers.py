@@ -35,14 +35,15 @@ class VaccineSerializer(serializers.ModelSerializer):
         fields=("__all__")
     
 class GuardianSerializer(serializers.ModelSerializer):
-    class Meta:
+     child_name = serializers.ReadOnlyField(source='child.first_name')  
+     class Meta:
         model = Guardian
-        fields = '__all__'
+        fields = ['id','first_name','last_name','phone_number','status','location','child_name']
 
 class ChildSerializer(serializers.ModelSerializer):
-    
+   
     class Meta:
         model = Child
         fields = '__all__'
 
-      
+       
