@@ -1,9 +1,8 @@
 from django.contrib.auth.models import AbstractUser, Permission,Group
 from django.db import models
-from django.urls import reverse
 from phonenumber_field.modelfields import PhoneNumberField
 from location.models import Location
-from django.core.mail import send_mail
+
 
 
 class CustomUser(AbstractUser):
@@ -34,11 +33,7 @@ class Healthworker(AbstractUser):
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
     
-    def send_verification_email(self):
-        verification_link = reverse('verify_email', kwargs={'token': str(self.verification_token)})
-        subject = 'Verify your email'
-        message = f'Please click the link to verify your email: {verification_link}'
-        send_mail(subject, message, 'noreply@warsan.xyz', [self.email])  
+
         
 
 

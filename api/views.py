@@ -1,18 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from .permissions import IsAdminOrNGO, IsHealthworker, IsOwnerOrAdmin, IsAdminOrReadOnly
 from rest_framework.permissions import IsAuthenticated
-from .serializers import (
-    LocationSerializer,
-    Immunization_RecordSerializer,
-    CustomUserSerializer,
-    HealthworkerSerializer,
-    VaccineSerializer,
-    ChildSerializer,
-    GuardianSerializer,
-    
-)
 from django.http import Http404
 from location.models import Location
 from Immunization_Record.models import Immunization_Record
@@ -25,7 +14,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, render
 from django.utils.crypto import get_random_string
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
+from django.urls import reverse
+from .serializers import *
+from .permissions import IsAdminOrNGO, IsHealthworker, IsOwnerOrAdmin, IsAdminOrReadOnly
+from . utils import send_emails
 
 
 @api_view(['GET', 'POST'])
@@ -146,13 +138,20 @@ def healthworker_signup(request):
         print("Serializer is valid.")
         password = request.data.get('password')
         hashed_password = make_password(password)
+        email = request.data.get('email')
         healthworker = serializer.save(password=hashed_password)
         print("Healthworker saved successfully.")
-
         
-        
-        healthworker.send_verification_email()
-
+        #Send verification email on signup
+        verification_link = reverse('verify_email', kwargs={'token': str(self.verification_token)})
+        subject = 'Verify your email'
+        message = f'Please click the link to verify your email: {verification_link}'
+        try:
+            send_emails(subject, message, email)
+            print("email sent successfully")
+        except Exception as e:
+            print(f'failed to send email: {e}')
+            return Response({'message': 'Error sending email'},)
         return Response({'message': 'Health worker registered successfully'}, status=status.HTTP_201_CREATED)
     print("Serializer errors:", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
