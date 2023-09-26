@@ -16,10 +16,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username','password', 'email', 'first_name', 'last_name')
 
 class HealthworkerSerializer(serializers.ModelSerializer):
-    
+    location_name=serializers.ReadOnlyField(source='location.region')
     class Meta:
         model = Healthworker
-        fields = ('id', 'username', 'email', 'first_name', 'last_name','location', 'hospital')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name','location_name', 'hospital')
 
 class Immunization_RecordSerializer(serializers.ModelSerializer):
     child_name = serializers.ReadOnlyField(source='child.first_name')  

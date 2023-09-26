@@ -190,13 +190,14 @@ def ngo_login(request):
     username = request.data.get('username')
     password = request.data.get('password')
     user = CustomUser.objects.filter(username=username).first()
+    
     if user is not None and user.check_password(password):
+        # Password is valid
         login(request, user)
         token = default_token_generator.make_token(user)
         return Response({'token': token}, status=status.HTTP_200_OK)
+    
     return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminOrNGO])
@@ -446,16 +447,16 @@ def guardian_detail(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAdminOrNGO])
 def ngo_signup(request):
-    
     serializer = CustomUserSerializer(data=request.data)
     if serializer.is_valid():
-    
+        password = request.data.get('password')
+        hashed_password = make_password(password)  # Hash the password
+        serializer.validated_data['password'] = hashed_password
         user = serializer.save()
-        user.set_password(request.data.get('password'))
-        user.save()
         return Response({'message': 'NGO user created successfully'}, status=status.HTTP_201_CREATED)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 @permission_classes([IsAdminOrNGO])

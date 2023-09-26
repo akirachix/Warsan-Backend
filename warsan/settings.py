@@ -203,7 +203,7 @@ try:
         'Test Email',
         'This is a test email sent from Django.',
         'noreply@warsan.xyz',
-        ['eunicemusenyia@gmail.com ',],
+        ['kayitaramirwaaclever@gmail.com ',],
         fail_silently=False,
     )
     print("Email sent successfully.")
