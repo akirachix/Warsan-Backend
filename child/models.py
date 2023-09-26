@@ -18,6 +18,7 @@ class Child(models.Model):
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+   
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A') 
@@ -43,7 +44,7 @@ class Guardian(models.Model):
     location = models.ForeignKey(Location, on_delete=models.SET_NULL,null=True)
     phone_number = PhoneNumberField(unique=True, region='IR')
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A') 
-    child = models.ForeignKey(Child, on_delete=models.SET_NULL,null=True)
+    child= models.ForeignKey(Child, on_delete=models.SET_NULL,null=True)
 
     def  deactivate_guardian(self,guardian_detail):
         Guardian = Child.objects.get(pk=guardian_detail)

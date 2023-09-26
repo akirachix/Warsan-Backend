@@ -161,6 +161,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+#Email configuration 
+
 
 
 
@@ -180,3 +182,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Heroku settings.
 # import django_heroku
 # django_heroku.settings(locals())
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True  
+
+# SMTP settings
+EMAIL_HOST = 'smtp.larksuite.com'
+EMAIL_PORT = 587  
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  
+EMAIL_USE_SSL = False  
+

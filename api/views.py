@@ -23,6 +23,9 @@ from django.contrib.auth.hashers import make_password
 from child.models import Child, Guardian
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, render
+from django.utils.crypto import get_random_string
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
 
 
 @api_view(['GET', 'POST'])
@@ -102,14 +105,42 @@ def immunization_record_detail(request, pk):
         immunization_record.delete()
         return Response("Immunization Record deleted", status=status.HTTP_204_NO_CONTENT)
 
+# @api_view(['POST'])
+# @permission_classes([IsAdminOrNGO])
+# def healthworker_signup(request):
+#     print("Healthworker signup request received.")
+#     required_fields = ['first_name', 'last_name', 'hospital', 'email', 'phone_number', 'location']
+#     for field in required_fields:
+#         if field not in request.data:
+#             return Response({'error': f'{field} is required'}, status=status.HTTP_400_BAD_REQUEST)
+#     serializer = HealthworkerSerializer(data=request.data)
+#     if serializer.is_valid():
+#         print("Serializer is valid.")
+#         password = request.data.get('password')
+#         hashed_password = make_password(password)
+#         healthworker = serializer.save(password=hashed_password)
+#         print("Healthworker saved successfully.")
+#         return Response({'message': 'Health worker registered successfully'}, status=status.HTTP_201_CREATED)
+#     print("Serializer errors:", serializer.errors)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
 @api_view(['POST'])
 @permission_classes([IsAdminOrNGO])
 def healthworker_signup(request):
     print("Healthworker signup request received.")
-    required_fields = ['first_name', 'last_name', 'hospital', 'email', 'phone_number', 'location']
+    required_fields = ['first_name', 'last_name', 'hospital', 'email', 'location']
     for field in required_fields:
         if field not in request.data:
             return Response({'error': f'{field} is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    token_generator = PasswordResetTokenGenerator()
+    verification_token = token_generator.make_token(request.user)
+
+
+    request.data['verification_token'] = verification_token
+
     serializer = HealthworkerSerializer(data=request.data)
     if serializer.is_valid():
         print("Serializer is valid.")
@@ -117,9 +148,16 @@ def healthworker_signup(request):
         hashed_password = make_password(password)
         healthworker = serializer.save(password=hashed_password)
         print("Healthworker saved successfully.")
+
+        
+        
+        healthworker.send_verification_email()
+
         return Response({'message': 'Health worker registered successfully'}, status=status.HTTP_201_CREATED)
     print("Serializer errors:", serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['POST'])
 @permission_classes([IsAdminOrNGO])
