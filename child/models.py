@@ -2,6 +2,7 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from location.models import Location
+from datetime import date
 
 
 GENDER_CHOICES = (
@@ -38,7 +39,11 @@ class Child(models.Model):
         child.save()
     def __str__(self):
         return f"{self.first_name} {self.last_name} )"
-
+    
+    def calculate_age(self):
+        today = date.today()
+        age_in_months = (today.year - self.date_of_birth.year) * 12 + (today.month - self.date_of_birth.month)
+        return age_in_months 
 
 
 from django.db import models
@@ -76,5 +81,6 @@ class Guardian(models.Model):
     def get_children(self):
         return self.children.all()
     
+        
     def __str__(self):
         return f"{self.first_name} {self.last_name} (Guardian)"
