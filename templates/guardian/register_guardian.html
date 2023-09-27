@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Basic styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        /* Styling for the form container */
+        .upload-form-container {
+            max-width: 800px; /* Increased max-width */
+            margin: 0 auto;
+            padding: 40px; /* Increased padding */
+            background-color: #fff;
+            border-radius: 10px; /* Adjusted border radius */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styling for form elements */
+        .upload_form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .upload_form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .upload_form input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        .upload_form button[type="submit"] {
+            padding: 15px 30px; /* Increased padding */
+            background-color: blue;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            /* Add placeholder icons */
+            background-image: url('path_to_icon.png'); /* Replace 'path_to_icon.png' with the actual path to your icon image */
+            background-repeat: no-repeat;
+            background-position: left center;
+            padding-left: 40px; /* Adjusted padding for the icon */
+        }
+
+        /* Style the title to be blue */
+        h3 {
+            color: blue;
+        }
+    </style>
+    <title>Guardian Upload Form</title>
+</head>
+<body>
+    <div class="upload-form-container">
+        <h3>Guardian Upload Form</h3>
+        <form method="POST" class="upload_form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</body>
+</html>

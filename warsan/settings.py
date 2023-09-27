@@ -161,6 +161,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+#Email configuration 
+
 
 
 
@@ -180,3 +182,31 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Heroku settings.
 # import django_heroku
 # django_heroku.settings(locals())
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# SMTP settings
+EMAIL_HOST = 'smtp.larksuite.com'
+EMAIL_PORT = 465  
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = 'noreply@warsan.xyz' 
+
+
+from django.core.mail import send_mail
+
+try:
+    send_mail(
+        'Test Email',
+        'This is a test email sent from Django.',
+        'noreply@warsan.xyz',
+        [' ',],
+        fail_silently=False,
+    )
+    print("Email sent successfully.")
+except Exception as e:
+    print("Email sending failed:", e)
+
