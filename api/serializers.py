@@ -20,32 +20,37 @@ class HealthworkerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Healthworker
         fields = ('id', 'username', 'email', 'first_name', 'last_name','location_name', 'hospital')
+class GuardianSerializer(serializers.ModelSerializer):
+     location_name=serializers.ReadOnlyField(source='location.region')
+     class Meta:
+        model = Guardian
+        fields = ['id','first_name','last_name','phone_number','status','location_name']
+
+class ChildSerializer(serializers.ModelSerializer):
+    guardian_name=serializers.ReadOnlyField(source='guardian.first_name')
+    location_name=serializers.ReadOnlyField(source='location.region')
+    phone_number = serializers.SerializerMethodField()
+    class Meta:
+        model = Child
+        fields = ['id','first_name','last_name','date_of_birth','gender','status','guardian_name','phone_number', 'location_name']
+   
+       
 
 class Immunization_RecordSerializer(serializers.ModelSerializer):
     child_name = serializers.ReadOnlyField(source='child.first_name')  
     vaccine_name = serializers.ReadOnlyField(source='vaccine.name')
-    guardian_name = serializers.ReadOnlyField(source='guardian.first_name')  
-    guardian_number=serializers.ReadOnlyField(source='guardian.phone_number')
-    guardian_location=serializers.ReadOnlyField(source='guardian.location')
+    
+    
+    guardian_name=serializers.ReadOnlyField(source='guardian.first_name')
     class Meta:
         model =Immunization_Record
-        fields = ['id','child_name','vaccine_name','guardian_name','guardian_number','guardian_location','date_of_administration', 'next_date_of_administration', 'child_name', 'vaccine_name']
+        fields = ['id','child_name','vaccine_name','guardian_name','date_of_administration', 'next_date_of_administration']
+
+ 
 
 class VaccineSerializer(serializers.ModelSerializer):
     class Meta:
         model=Vaccine
         fields=("__all__")
     
-class GuardianSerializer(serializers.ModelSerializer):
-   
-     class Meta:
-        model = Guardian
-        fields = ['id','first_name','last_name','phone_number','status','location','child_name']
 
-class ChildSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Child
-        fields = ['id','first_name','last_name','date_of_birth','gender','status','guardian_name','guardian_number']
-
-       
