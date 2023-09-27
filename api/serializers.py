@@ -24,10 +24,12 @@ class HealthworkerSerializer(serializers.ModelSerializer):
 class Immunization_RecordSerializer(serializers.ModelSerializer):
     child_name = serializers.ReadOnlyField(source='child.first_name')  
     vaccine_name = serializers.ReadOnlyField(source='vaccine.name')
-   
+    guardian_name = serializers.ReadOnlyField(source='guardian.first_name')  
+    guardian_number=serializers.ReadOnlyField(source='guardian.phone_number')
+    guardian_location=serializers.ReadOnlyField(source='guardian.location')
     class Meta:
         model =Immunization_Record
-        fields = ['id', 'date_of_administration', 'next_date_of_administration', 'child_name', 'vaccine_name']
+        fields = ['id','child_name','vaccine_name','guardian_name','guardian_number','guardian_location','date_of_administration', 'next_date_of_administration', 'child_name', 'vaccine_name']
 
 class VaccineSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,15 +37,15 @@ class VaccineSerializer(serializers.ModelSerializer):
         fields=("__all__")
     
 class GuardianSerializer(serializers.ModelSerializer):
-     child_name = serializers.ReadOnlyField(source='child.first_name')  
+   
      class Meta:
         model = Guardian
         fields = ['id','first_name','last_name','phone_number','status','location','child_name']
 
 class ChildSerializer(serializers.ModelSerializer):
-   
+    
     class Meta:
         model = Child
-        fields = '__all__'
+        fields = ['id','first_name','last_name','date_of_birth','gender','status','guardian_name','guardian_number']
 
        
