@@ -20,6 +20,7 @@ class Healthworker(AbstractUser):
     last_name = models.CharField(max_length=32)
     hospital = models.CharField(max_length=32)
     email = models.CharField(max_length=32)
+    phone_number = PhoneNumberField(region='IR', unique=True,)
     location = models.ForeignKey(Location,on_delete= models.CASCADE, blank=True)
     groups = models.ManyToManyField(Group, related_name='healthworkers')
     user_permissions = models.ManyToManyField(Permission, related_name='healthworkers')
