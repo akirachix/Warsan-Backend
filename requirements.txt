@@ -11,7 +11,7 @@ click==8.0.3
 colorama==0.4.4
 cryptography==3.4.8
 dbus-next==0.2.3
-dbus-python==1.2.18
+# dbus-python==1.2.18
 distro==1.7.0
 dj-database-url==2.0.0
 Django==3.2.6
@@ -60,7 +60,7 @@ ptyprocess==0.7.0
 py==1.11.0
 pycodestyle==2.7.0
 pycparser==2.21
-pycups==2.0.1
+# pycups==2.0.1
 pyflakes==2.3.1
 PyJWT==2.3.0
 pymacaroons==0.13.0
@@ -73,7 +73,7 @@ pytz==2023.3
 pyxdg==0.27
 PyYAML==6.0.1
 regex==2023.8.8
-reportlab==3.6.8
+# reportlab==3.6.8
 requests==2.25.1
 SecretStorage==3.3.1
 six==1.16.0
