@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('ngo/signup/', views.ngo_signup, name='ngo-signup'),
     path('ngo/logout/', views.ngo_logout, name='ngo-logout'),
-    path('customusers/', views.custom_user_list, name='customuser-list'),
+    path('customusers/', views.custom_user_list, name='customuser-list'),    
     path('customusers/<int:pk>/', views.custom_user_detail, name='customuser-detail'),
     path('healthworkers/', views.healthworker_list, name='healthworker-list'),
     path('healthworkers/<int:pk>/', views.healthworker_detail, name='healthworker-detail'),
@@ -18,6 +18,7 @@ urlpatterns = [
     path('guardians/', views.guardian_list, name='guardian-list'),
     path('guardians/<int:pk>/', views.guardian_detail, name='guardian-detail'),
     path('immunization-status/', views.immunization_status_api_view, name='immunization-status'),
+    path('immunization-records/', views.immunization_record_list, name='immunization_record_list'),  
     path('child-vaccine-count/<int:child_id>/', views.child_vaccines_count_api_view, name='child-vaccine-count'),
     path('region_rate/<str:region_name>/',views.immunization_rate,name='immunization-rate'),
     path('regions_rates/',views.all_regions_rates,name='regions_rates')
