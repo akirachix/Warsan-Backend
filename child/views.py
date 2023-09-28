@@ -4,7 +4,6 @@ from .models import Guardian,Child
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from location.models import Location
-
 # def retrieve_guardian(request):
 #     if request.method == 'POST':
 #         phone_number = request.POST.get('phone_number')
@@ -14,8 +13,6 @@ from location.models import Location
 #         except Guardian.DoesNotExist:
 #             return render(request, 'guardian_not_found.html')
 #     return render(request, 'guardian/retrieve_guardian.html')
-
-
 def retrieve_guardian(request):
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number')
@@ -26,8 +23,6 @@ def retrieve_guardian(request):
             # Guardian not found, redirect to the guardian registration form
             return redirect('register_guardian')  # Replace 'register_guardian' with your URL name for the registration form
     return render(request, 'guardian/retrieve_guardian.html')
-
-
 def guardian_detail(request, guardian_id):
     guardian = Guardian.objects.get(pk=guardian_id)
     children = guardian.child_set.all()
@@ -36,13 +31,11 @@ def guardian_detail(request, guardian_id):
     for child in children:
         child_age = child.calculate_age()
         children_with_age.append({'child': child, 'age': child_age})
-
     context = {
         'guardian': guardian,
         'children_with_age': children_with_age,
     }
     return render(request, 'guardian/guardian_detail.html', context)
-
 def register_guardian(request):
     if request.method == 'POST':
         form = GuardianRegistrationForm(request.POST)
@@ -74,7 +67,6 @@ def register_guardian(request):
     regions = Location.REGIONS_CHOICES
     print("Regions:", regions)  # Debug: Print regions
     return render(request, 'guardian/register_guardian.html', {'form': form, 'regions': regions})
-
 def register_child(request):
     if request.method == 'POST':
         form = ChildRegistrationForm(request.POST)
@@ -94,7 +86,6 @@ def register_child(request):
     # Pass the regions for the dropdown in the form
     regions = Location.REGIONS_CHOICES
     return render(request, 'guardian/register_child.html', {'form': form, 'regions': regions})
- 
 # def guardian_upload_form(request):
 #     if request.method =='POST':
 #         form=GuardianUploadForm(request.POST)
@@ -103,9 +94,3 @@ def register_child(request):
 #     else:
 #         form=GuardianUploadForm()
 #     return render(request,"guardian/guardian_upload.html",{"form":form})
-
-
-
-
-
-

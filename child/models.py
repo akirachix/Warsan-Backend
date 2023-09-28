@@ -38,8 +38,7 @@ class Child(models.Model):
         child.status = 'I'
         child.save()
     def __str__(self):
-        return f"{self.first_name} {self.last_name} )"
-    
+        return f"{self.first_name} {self.last_name}"
     def calculate_age(self):
         today = date.today()
         age_in_months = (today.year - self.date_of_birth.year) * 12 + (today.month - self.date_of_birth.month)

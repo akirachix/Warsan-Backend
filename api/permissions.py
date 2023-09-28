@@ -16,7 +16,7 @@ class IsOwnerOrAdmin(permissions.BasePermission):
     object owners access, and read-only access for others.
     """
     def has_object_permission(self, request, view, obj):
-        if request.user and (request.user.is_staff or obj.created_by == request.user):
+        if request.user and (request.user.is_staff):
             return True
         return False
 
@@ -26,7 +26,7 @@ class IsAdminOrNGO(permissions.BasePermission):
     """
     def has_object_permission(self, request, view, obj):
         print(f"::::::::::::::::::::::::::::::::::::{request.user}=============")
-        if request.user and (request.user.is_staff or obj.created_by == request.user):
+        if request.user and (request.user.is_staff):
             return True
         return False
 

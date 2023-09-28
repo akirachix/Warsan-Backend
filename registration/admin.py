@@ -9,7 +9,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 
 class HealthworkerAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name','email','location', 'hospital')
+    list_display = ('first_name', 'last_name','email','location', 'hospital', 'phone_number')
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
