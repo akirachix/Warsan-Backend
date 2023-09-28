@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 import dj_database_url
 from pathlib import Path
 import os
@@ -89,7 +88,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'warsan.wsgi.application'
 
+
 DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+
 
 
 #swagger settings
@@ -160,6 +161,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+#Email configuration 
+
 
 
 
@@ -177,5 +180,33 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Heroku settings.
-import django_heroku
-django_heroku.settings(locals())
+# import django_heroku
+# django_heroku.settings(locals())
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# SMTP settings
+EMAIL_HOST = 'smtp.larksuite.com'
+EMAIL_PORT = 465  
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')  
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = 'noreply@warsan.xyz' 
+
+
+from django.core.mail import send_mail
+
+try:
+    send_mail(
+        'Test Email',
+        'This is a test email sent from Django.',
+        'noreply@warsan.xyz',
+        [' ',],
+        fail_silently=False,
+    )
+    print("Email sent successfully.")
+except Exception as e:
+    print("Email sending failed:", e)
+
