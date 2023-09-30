@@ -53,45 +53,18 @@ def immunization_record_list(request):
     
 
 
+
 @api_view(['POST'])
-@permission_classes([IsAdminOrNGO])
 def healthworker_signup(request):
-    print("Healthworker signup request received.")
-    required_fields = ['first_name', 'last_name', 'hospital', 'email', 'location']
-    for field in required_fields:
-        if field not in request.data:
-            return Response({'error': f'{field} is required'}, status=status.HTTP_400_BAD_REQUEST)
-
-    
-    token_generator = PasswordResetTokenGenerator()
-    verification_token = token_generator.make_token(request.user)
-
-
-    request.data['verification_token'] = verification_token
-
-    serializer = HealthworkerSerializer(data=request.data)
-    if serializer.is_valid():
-        print("Serializer is valid.")
+    if request.method == 'POST':
         password = request.data.get('password')
-        hashed_password = make_password(password)
-        email = request.data.get('email')
-        healthworker = serializer.save(password=hashed_password)
-        print("Healthworker saved successfully.")
-        
-        verification_link = reverse('verify_email', kwargs={'token': str(self.verification_token)})
-        subject = 'Verify your email'
-        message = f'Please click the link to verify your email: {verification_link}'
-        try:
-            send_emails(subject, message, email)
-            print("email sent successfully")
-        except Exception as e:
-            print(f'failed to send email: {e}')
-            return Response({'message': 'Error sending email'},)
-        return Response({'message': 'Health worker registered successfully'}, status=status.HTTP_201_CREATED)
-    print("Serializer errors:", serializer.errors)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+        serializer = HealthworkerSerializer(data=request.data)
+        if serializer.is_valid():
+            healthworker = serializer.save()
+            healthworker.set_password(password)
+            healthworker.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

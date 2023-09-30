@@ -35,37 +35,20 @@ def guardian_detail(request, guardian_id):
         'children_with_age': children_with_age,
     }
     return render(request, 'guardian/guardian_detail.html', context)
+
 def register_guardian(request):
     if request.method == 'POST':
         form = GuardianRegistrationForm(request.POST)
-        print("Form errors:", form.errors)  # Debug: Print form errors
         if form.is_valid():
-            print("Form is valid")  # Debug: Confirm form is valid
             guardian = form.save(commit=False)
-            # Get the selected region from the form
-            region = form.cleaned_data.get('location')
-            print("Selected region:", region)  # Debug: Print selected region
-            if region:
-                # Get or create the Location instance based on the selected region
-                location, _ = Location.objects.get_or_create(region=region)
-                print("Location instance:", location)  # Debug: Print location instance
-                if isinstance(location, Location):
-                    guardian.location = location  # Assign the Location instance to the guardian
-                else:
-                    # Handle the case where location is not an instance of Location
-                    raise ValueError("Invalid location instance")
             # Save the guardian
             guardian.save()
-            # Print the saved guardian's ID for debugging
-            print("Saved guardian ID:", guardian.id)
             # Redirect to the guardian details page
-            return redirect('guardian_details', guardian_id=guardian.id)
+            return redirect('guardian_detail', guardian_id=guardian.id)  # Redirect to the guardian details page
     else:
         form = GuardianRegistrationForm()
-    # Pass the regions for the dropdown in the form
-    regions = Location.REGIONS_CHOICES
-    print("Regions:", regions)  # Debug: Print regions
-    return render(request, 'guardian/register_guardian.html', {'form': form, 'regions': regions})
+    
+    return render(request, 'guardian/register_guardian.html', {'form': form})
 def register_child(request):
     if request.method == 'POST':
         form = ChildRegistrationForm(request.POST)

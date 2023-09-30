@@ -147,7 +147,7 @@
             background-position: left center;
             padding-left: 40px;
             font-size: 20px;
-            
+
           
         }
         h3 {
@@ -159,11 +159,12 @@
 <body>
     <div class="upload-form-container">
         <h3>Guardian Upload Form</h3>
-        <form method="POST" class="upload_form" enctype="multipart/form-data">
+        <form method="POST" class="upload_form" enctype="multipart/form-data" action="{% url 'register_guardian' %}">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Save</button>
         </form>
+        
     </div>
 </body>
 </html>
