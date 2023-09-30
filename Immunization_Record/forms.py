@@ -3,9 +3,12 @@
 # immunization_records/forms.py
 
 from django import forms
-from .models import ImmunizationRecord
+from .models import Immunization_Record
 
-class ImmunizationRecordForm(forms.ModelForm):
+class ImmunizationRecordUpdateForm(forms.ModelForm):
     class Meta:
-        model = ImmunizationRecord
-        fields = "__all__"
+        model = Immunization_Record
+        fields = ['vaccine', 'next_date_of_administration']
+        widgets = {
+            'vaccine': forms.SelectMultiple(attrs={'size': 5}),  # Adjust the 'size' attribute as needed
+        }

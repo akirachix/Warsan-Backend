@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immunization Record Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px; 
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .vaccine-list {
+            margin-top: 20px; /* Increased margin-top */
+        }
+
+        .vaccine-item {
+            padding: 8px 12px; /* Increased padding */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 8px 0;
+            background-color: #f5f5f5;
+            font-size: 18px;
+            display: inline-block;
+            color: #333;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        .floating-button {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            text-align: center;
+            line-height: 60px;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            text-decoration: none; 
+        }
+
+        .floating-button:hover {
+            background-color: #258cd1;
+        }
+        .large-arrow {
+    font-size: 36px; 
+     }
+    </style>
+</head>
+<body>
+    <a href="{% url 'guardian_detail' guardian_id=immunization_record.child.guardian.id %}" class="back-arrow large-arrow">&#8592;</a>
+
+    <h1>Immunization Record Detail</h1>
+    <div class="container">
+        <p><strong>Child:</strong> {{ immunization_record.child }}</p>
+        <p><strong>Status:</strong> {{ immunization_record.status }}</p>
+        <p><strong>Next Date of Administration (Due Date):</strong> {{ immunization_record.next_date_of_administration }}</p>
+      
+    <div class="vaccine-list">
+        <h3><strong>Vaccines:</strong></h3>
+        <ul>
+            {% for vaccine in immunization_record.vaccine.all %}
+                <li class="vaccine-item">{{ vaccine.vaccine_choice }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+   
+    <a href="{% url 'update_immunization_record' immunization_record.id %}" class="floating-button">+</a>
+</body>
+</html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+<DOTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,12 +13,11 @@
         text-decoration-color: lightblue;
         color: rgb(87, 163, 189);
         margin-top: 70px;
-    } 
+    }
     .tittle {
         text-align: center;
-        text-decoration-color: lightblue;       
-    } 
-
+        text-decoration-color: lightblue;
+    }
     .children-container {
         display: flex;
         flex-direction: column;
@@ -26,7 +26,6 @@
         margin: auto;
         align-items: center;
     }
-
     .child-card {
         border: 2px solid pink;
         margin: 10px;
@@ -65,11 +64,13 @@
     <div class="children-container">
         {% for child_data in children_with_age %}
             <div class="child-card">
-                <h3>{{ child_data.child.first_name }} {{ child_data.child.last_name }}</h3>
+                
+                <h3><a href="{% url 'view_immunization_record' child_data.child.id %}">{{ child_data.child.first_name }} {{ child_data.child.last_name }}</a></h3>
                 <p>{{ child_data.age }} months old</p>
             </div>
         {% endfor %}
     </div>
-    <button class="add-button">+</button>
+    <!-- <button class="add-button">+</button> -->
+    <button class="add-button"><a href="{% url 'register_child' %}">+</a></button>
 </body>
 </html>
