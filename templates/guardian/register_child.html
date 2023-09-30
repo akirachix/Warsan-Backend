@@ -108,6 +108,8 @@
     <div class="upload-form-container">
         <h3>Register a child</h3>
         <form method="POST" class="upload_form" enctype="multipart/form-data">
+         
+
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="bt">Save</button>

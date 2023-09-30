@@ -49,30 +49,25 @@ def register_guardian(request):
         form = GuardianRegistrationForm()
     
     return render(request, 'guardian/register_guardian.html', {'form': form})
+
 def register_child(request):
     if request.method == 'POST':
         form = ChildRegistrationForm(request.POST)
         if form.is_valid():
             child = form.save(commit=False)
-            # Get or create the Location instance based on the selected region
+            
             region = form.cleaned_data.get('location')
             if region:
                 location, _ = Location.objects.get_or_create(region=region)
-                child.location = location  # Assign the Location instance to the child
-            # Save the child
+                child.location = location  
+            
             child.save()
-            # Redirect to a success page or wherever needed
-            return redirect('immunization_record_view', child_id=child.id)
+            child_id = child.id
+            
+            # if child_id:
+            return redirect('view_immunization_record', child_id=child_id)
     else:
         form = ChildRegistrationForm()
-    # Pass the regions for the dropdown in the form
+    
     regions = Location.REGIONS_CHOICES
     return render(request, 'guardian/register_child.html', {'form': form, 'regions': regions})
-# def guardian_upload_form(request):
-#     if request.method =='POST':
-#         form=GuardianUploadForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#     else:
-#         form=GuardianUploadForm()
-#     return render(request,"guardian/guardian_upload.html",{"form":form})
