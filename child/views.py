@@ -1,9 +1,8 @@
 from django.shortcuts import redirect, render
 from .forms import GuardianRegistrationForm, ChildRegistrationForm
-from .models import Guardian,Child
-from django.urls import reverse
-from django.http import HttpResponseRedirect
+from .models import Guardian
 from location.models import Location
+
 # def retrieve_guardian(request):
 #     if request.method == 'POST':
 #         phone_number = request.POST.get('phone_number')
@@ -80,7 +79,7 @@ def register_child(request):
             # Save the child
             child.save()
             # Redirect to a success page or wherever needed
-            return redirect('child_registration_success')
+            return redirect('immunization_record_view', child_id=child.id)
     else:
         form = ChildRegistrationForm()
     # Pass the regions for the dropdown in the form

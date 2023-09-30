@@ -54,13 +54,12 @@ phonenumbers==8.13.20
 Pillow==9.0.1
 pluggy==0.13.1
 protobuf==3.12.4
-psycopg2==2.9.7
+# psycopg2==2.9.7
 psycopg2-binary==2.9.7
 ptyprocess==0.7.0
 py==1.11.0
 pycodestyle==2.7.0
 pycparser==2.21
-# pycups==2.0.1
 pyflakes==2.3.1
 PyJWT==2.3.0
 pymacaroons==0.13.0
