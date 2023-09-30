@@ -18,24 +18,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 
 class HealthworkerSerializer(serializers.ModelSerializer):
-    location_name = serializers.CharField(source='location.region', read_only=True)
-    location = serializers.CharField(write_only=True) 
     class Meta:
         model = Healthworker
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'location_name', 'hospital', 'phone_number', 'location']
-
-    def create(self, validated_data):
-        location_name = validated_data.pop('location', None)
-        if location_name:
-            try:
-                location = Location.objects.get(name=location_name)
-                validated_data['location'] = location
-            except Location.DoesNotExist:
-                raise serializers.ValidationError(f"Location with name '{location_name}' does not exist.")
-
-        return Healthworker.objects.create(**validated_data)
-
-
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'hospital', 'phone_number']
+        
 class GuardianSerializer(serializers.ModelSerializer):
      location_name=serializers.ReadOnlyField(source='location.region')
      class Meta:
