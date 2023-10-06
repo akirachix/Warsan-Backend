@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Basic styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F4F4F4;
+            text-align: center;
+        }
+        /* Styling for the form container */
+        .upload-form-container {
+            max-width: 800px; /* Increased max-width */
+            margin: 0 auto;
+            padding: 40px; /* Increased padding */
+            background-color: #fff;
+            font-family: 'Kumbh Sans', sans-serif;
+    
+            border-radius: 10px; /* Adjusted border radius */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Styling for form elements */
+        .upload_form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+        /* .upload_form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        } */
+        .upload_form input[type="file"] {
+            margin-bottom: 10px;
+            width: 100%; /* Set the width to 100% */
+            padding: 15px;
+        }
+        input{
+            padding: 20px;
+            height: 25px;
+            width: 16rem;
+            background-color: white;
+            border: solid 1px black;
+            /* border: 2px solid pink; */
+        }
+        .upload_form label {
+            font-weight: 200;
+            margin-bottom: 10px;
+            font-size: 20px;
+            display: block;
+        }
+        select{
+            height: 50px;
+            background-color: white;
+            color: black;
+            width: 18rem;
+            padding: 10px;
+        /* border: 2px solid pink; */
+        }
+        .upload_form button[type="submit"] {
+            padding: 20px 40px;
+            background-color: blue;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-image: url('path_to_icon.png');
+            background-repeat: no-repeat;
+            background-position: left center;
+            padding-left: 40px;
+            font-size: 20px;
+
+          
+        }
+        h3 {
+            color: blue;
+        }
+    </style>
+    <title>Guardian Upload Form</title>
+</head>
+<body>
+    <div class="upload-form-container">
+        <h3>Guardian Upload Form</h3>
+        <form method="POST" class="upload_form" enctype="multipart/form-data" action="{% url 'register_guardian' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+        
+    </div>
+</body>
+</html>
