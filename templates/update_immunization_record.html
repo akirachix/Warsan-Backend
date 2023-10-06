@@ -1,0 +1,170 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <title>Update Immunization Record</title>
+</head>
+<body>
+    <h1>Update Immunization Record</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Record</button>
+    </form>
+</body>
+</html> -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Immunization Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button[type="submit"]:hover {
+            background-color: #258cd1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Immunization Record</h1>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <label for="{{ form.vaccine.id_for_label }}">New Vaccines:</label>
+            {{ form.vaccine }}
+            <br>
+            <label for="{{ form.next_date_of_administration.id_for_label }}">Next Date of Administration:</label>
+            {{ form.next_date_of_administration }}
+            <br>
+            <button type="submit">Update Record</button>
+        </form>
+    </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Immunization Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Kumbh Sans', sans-serif;
+
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            /* font-weight: bold; */
+            margin-bottom: 5px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button[type="submit"]:hover {
+            background-color: #258cd1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Immunization Record</h1>
+    <div class="container">
+        <div class="container">
+            <form method="post" action="{% url 'view_immunization_record' record_id=immunization_record.id %}">
+                {% csrf_token %}
+                <label for="{{ form.vaccine.id_for_label }}">New Vaccines:</label>
+                {{ form.vaccine }}
+                <br>
+                <label for="{{ form.next_date_of_administration.id_for_label }}">Next Date of Administration:</label>
+                {{ form.next_date_of_administration }}
+                <br>
+                <button type="submit">Update Record</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
