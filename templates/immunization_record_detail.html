@@ -1,16 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Immunization Record Detail</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
+            margin: 20px;
+            padding: 70px;
+
         }
 
         h1 {
@@ -23,12 +25,14 @@
 
         .container {
             max-width: 800px;
-            margin: 20px auto;
+            margin: 40px auto;
             background-color: #fff;
             border: 1px solid #ccc;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
             border-radius: 5px;
+            font-family: 'Kumbh Sans', sans-serif;
+
         }
 
         p {
@@ -37,7 +41,7 @@
         }
 
         .vaccine-list {
-            margin-top: 20px; /* Increased margin-top */
+            margin-top: 20px; 
         }
 
         .vaccine-item {
@@ -77,8 +81,8 @@
             background-color: #258cd1;
         }
         .large-arrow {
-    font-size: 36px; 
-     }
+            font-size: 36px; 
+        }
     </style>
 </head>
 <body>
@@ -86,19 +90,24 @@
 
     <h1>Immunization Record Detail</h1>
     <div class="container">
-        <p><strong>Child:</strong> {{ immunization_record.child }}</p>
-        <p><strong>Status:</strong> {{ immunization_record.status }}</p>
-        <p><strong>Next Date of Administration (Due Date):</strong> {{ immunization_record.next_date_of_administration }}</p>
-      
-    <div class="vaccine-list">
-        <h3><strong>Vaccines:</strong></h3>
-        <ul>
-            {% for vaccine in immunization_record.vaccine.all %}
-                <li class="vaccine-item">{{ vaccine.vaccine_choice }}</li>
-            {% endfor %}
-        </ul>
+        {% if immunization_record %}
+            <p><strong>Child:</strong> {{ immunization_record.child }}</p>
+            <p><strong>Status:</strong> {{ immunization_record.status }}</p>
+            <p><strong>Next Date of Administration (Due Date):</strong> {{ immunization_record.next_date_of_administration }}</p>
+          
+            <div class="vaccine-list">
+                <h3><strong>Vaccines:</strong></h3>
+                <ul>
+                    {% for vaccine in immunization_record.vaccine.all %}
+                        <li class="vaccine-item">{{ vaccine.get_vaccine_choice_display }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <p>No immunization record found for this child.</p>
+            <a href="{% url 'create_immunization_record' child_id=immunization_record.child.id %}">Start giving vaccines</a>
+        {% endif %}
     </div>
-   
-    <a href="{% url 'update_immunization_record' immunization_record.id %}" class="floating-button">+</a>
-</body>
+    
+    <a href="{% url 'update_immunization_record' record_id=immunization_record.id %}" class="floating-button">+</a></body>
 </html>

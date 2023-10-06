@@ -25,6 +25,7 @@ class Child(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A')
     location = models.ForeignKey(Location, on_delete=models.SET_NULL,null=True)
     phone_number = PhoneNumberField(region='IR')
+    next_date_of_administration = models.DateField(null=True, blank=True)
    
     def save(self, *args, **kwargs):
         if self.guardian:

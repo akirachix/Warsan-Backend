@@ -47,7 +47,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path("child/",include("child.urls")),
     path("Immunization_Record/",include("Immunization_Record.urls")),
-     path("registration/",include("registration.urls"))
+    #  path("registration/",include("registration.urls"))
     
 
 

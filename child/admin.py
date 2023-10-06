@@ -3,7 +3,7 @@ from .models import Child, Guardian
 
 @admin.register(Child)
 class ChildAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'date_of_birth', 'gender', 'guardian', 'location', 'phone_number')
+    list_display = ('first_name', 'last_name', 'date_of_birth', 'gender', 'guardian', 'location', 'phone_number','next_date_of_administration')
     search_fields = ('first_name', 'last_name')
     list_filter = ('gender', 'status')
     def get_readonly_fields(self, request, obj=None):

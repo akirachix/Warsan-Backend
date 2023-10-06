@@ -92,6 +92,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Immunization Record</title>
     <style>
@@ -116,13 +118,15 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
             border-radius: 5px;
+            font-family: 'Kumbh Sans', sans-serif;
+
         }
         form {
             margin-top: 20px;
         }
         label {
             display: block;
-            font-weight: bold;
+            /* font-weight: bold; */
             margin-bottom: 5px;
         }
         select {
@@ -148,20 +152,19 @@
 <body>
     <h1>Update Immunization Record</h1>
     <div class="container">
-        <form method="post">
-            {% csrf_token %}
-            
-            <label for="{{ form.vaccine.id_for_label }}">New Vaccines:</label>
-<select id="{{ form.vaccine.id_for_label }}" name="{{ form.vaccine.name }}" multiple>
-    {% for option in form.vaccine.field.choices %}
-        <option value="{{ option.0 }}" {% if option.0 in form.vaccine.value %}selected{% endif %}>{{ option.1 }}</option>
-    {% endfor %}
-</select>
-            <label for="{{ form.next_date_of_administration.id_for_label }}">Next Date of Administration:</label>
-            {{ form.next_date_of_administration }}
-            <br>
-            <button type="submit">Update Record</button>
-        </form>
+        <div class="container">
+            <form method="post" action="{% url 'view_immunization_record' record_id=immunization_record.id %}">
+                {% csrf_token %}
+                <label for="{{ form.vaccine.id_for_label }}">New Vaccines:</label>
+                {{ form.vaccine }}
+                <br>
+                <label for="{{ form.next_date_of_administration.id_for_label }}">Next Date of Administration:</label>
+                {{ form.next_date_of_administration }}
+                <br>
+                <button type="submit">Update Record</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
+

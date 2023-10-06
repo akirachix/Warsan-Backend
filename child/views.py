@@ -1,6 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+import Immunization_Record
+
+from api.serializers import GuardianSerializer
+from api.views import guardian_list
 from .forms import GuardianRegistrationForm, ChildRegistrationForm
-from .models import Guardian
+from  child.models import Guardian
 from location.models import Location
 
 # def retrieve_guardian(request):
@@ -23,9 +27,8 @@ def retrieve_guardian(request):
             return redirect('register_guardian')  # Replace 'register_guardian' with your URL name for the registration form
     return render(request, 'guardian/retrieve_guardian.html')
 def guardian_detail(request, guardian_id):
-    guardian = Guardian.objects.get(pk=guardian_id)
+    guardian = get_object_or_404(Guardian, pk=guardian_id)
     children = guardian.child_set.all()
-    # Calculate child ages and add them to the children queryset
     children_with_age = []
     for child in children:
         child_age = child.calculate_age()
@@ -35,6 +38,7 @@ def guardian_detail(request, guardian_id):
         'children_with_age': children_with_age,
     }
     return render(request, 'guardian/guardian_detail.html', context)
+
 
 def register_guardian(request):
     if request.method == 'POST':
@@ -50,24 +54,24 @@ def register_guardian(request):
     
     return render(request, 'guardian/register_guardian.html', {'form': form})
 
-def register_child(request):
+
+# 
+
+
+
+
+def register_child(request, guardian_id):
+    guardian = Guardian.objects.get(id=guardian_id)
     if request.method == 'POST':
-        form = ChildRegistrationForm(request.POST)
+        form = ChildRegistrationForm(request.POST, guardian_id=guardian_id)
         if form.is_valid():
             child = form.save(commit=False)
-            
-            region = form.cleaned_data.get('location')
-            if region:
-                location, _ = Location.objects.get_or_create(region=region)
-                child.location = location  
-            
+            child.guardian = guardian
             child.save()
-            child_id = child.id
-            
-            # if child_id:
-            return redirect('view_immunization_record', child_id=child_id)
+            return redirect('upload_immunization',child_id=child.id)
     else:
-        form = ChildRegistrationForm()
-    
-    regions = Location.REGIONS_CHOICES
-    return render(request, 'guardian/register_child.html', {'form': form, 'regions': regions})
+        form = ChildRegistrationForm(guardian_id=guardian_id)
+    return render(request, 'child/register_child.html', {'form': form, 'guardian': guardian})
+
+def welcome_view(request):
+    return render(request, 'welcome.html')
