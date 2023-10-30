@@ -44,7 +44,8 @@ class Child(models.Model):
         today = date.today()
         age_in_months = (today.year - self.date_of_birth.year) * 12 + (today.month - self.date_of_birth.month)
         return age_in_months 
-
+    class Meta:
+        unique_together = ('first_name', 'last_name', 'guardian')
 
 from django.db import models
  

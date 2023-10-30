@@ -24,7 +24,7 @@ def retrieve_guardian(request):
             return redirect('guardian_detail', guardian_id=guardian.id)
         except Guardian.DoesNotExist:
             # Guardian not found, redirect to the guardian registration form
-            return redirect('register_guardian')  # Replace 'register_guardian' with your URL name for the registration form
+            return redirect('retrieve_guardian')  # Replace 'register_guardian' with your URL name for the registration form
     return render(request, 'guardian/retrieve_guardian.html')
 def guardian_detail(request, guardian_id):
     guardian = get_object_or_404(Guardian, pk=guardian_id)

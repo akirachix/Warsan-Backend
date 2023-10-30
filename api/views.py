@@ -1,3 +1,4 @@
+from tokenize import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -26,13 +27,13 @@ def location_list(request):
     data = []
     for location in locations:
         data.append({
+            'id': location.id,  # Include the 'id' field
             'region': location.region,
             'longitude': location.longitude,
             'latitude': location.latitude
         })
     return Response(data)
 
-    
 
 
 @api_view(['GET', 'POST', 'PUT'])
@@ -53,18 +54,66 @@ def immunization_record_list(request):
     
 
 
+@api_view(['POST'])
+@permission_classes([IsAdminOrNGO])
+def healthworker_signup(request):
+    serializer = HealthworkerSerializer(data=request.data)
+    if serializer.is_valid():
+        password = request.data.get('password')
+        healthworker = serializer.save(password=password)  # Save the password as provided by the user
+
+        return Response({'message': 'Health worker registered successfully'}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
-def healthworker_signup(request):
-    if request.method == 'POST':
-        password = request.data.get('password')
-        serializer = HealthworkerSerializer(data=request.data)
+@permission_classes([IsHealthworker])
+def healthworker_login(request):
+    phone_number = request.data.get('phone_number')
+    password = request.data.get('password')
+    user = Healthworker.objects.filter(phone_number=phone_number).first()
+    print(f"<<<<<<<<<<<<<<<<<<<<<<<<<<<{user}>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    if user is not None and user.password == password:  # Compare the password without hashing
+        login(request, user)
+        token = default_token_generator.make_token(user)
+        print(user)
+        return Response({'token': token}, status=status.HTTP_200_OK)
+    elif user is None:
+        return Response({'message': 'User with this phone number does not exist'}, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        return Response({'message': 'Invalid password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAdminOrNGO])
+def healthworker_list(request):
+    if request.method == 'GET':
+        healthworkers = Healthworker.objects.all()
+        serializer = HealthworkerSerializer(healthworkers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsOwnerOrAdmin])
+def healthworker_detail(request, pk):
+    try:
+        healthworker = Healthworker.objects.get(pk=pk)
+    except Healthworker.DoesNotExist:
+        return Response({'message': 'Health worker not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = HealthworkerSerializer(healthworker)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'PUT':
+        serializer = HealthworkerSerializer(healthworker, data=request.data)
         if serializer.is_valid():
-            healthworker = serializer.save()
-            healthworker.set_password(password)
-            healthworker.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        healthworker.delete()
+        return Response("Health worker deleted", status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
@@ -137,35 +186,6 @@ def custom_user_detail(request, pk):
         custom_user.delete()
         return Response("Custom user deleted", status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['GET'])
-@permission_classes([IsAdminOrNGO])
-def healthworker_list(request):
-    if request.method == 'GET':
-        healthworkers = Healthworker.objects.all()
-        serializer = HealthworkerSerializer(healthworkers, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-@api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsOwnerOrAdmin])
-def healthworker_detail(request, pk):
-    try:
-        healthworker = Healthworker.objects.get(pk=pk)
-    except Healthworker.DoesNotExist:
-        return Response({'message': 'Health worker not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = HealthworkerSerializer(healthworker)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
-        serializer = HealthworkerSerializer(healthworker, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE':
-        healthworker.delete()
-        return Response("Health worker deleted", status=status.HTTP_204_NO_CONTENT)
-
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminOrNGO])
 def vaccine_list(request):
@@ -192,9 +212,16 @@ def vaccine_detail(request, vaccine_choice):
 
 @api_view(['GET', 'POST', 'PUT'])
 def child_list(request):
-    children = Child.objects.all()
-    serialized_children = ChildSerializer(children, many=True) 
-    return Response(serialized_children.data, status=status.HTTP_200_OK)
+    if request.method == 'GET':
+        children = Child.objects.all()
+        serialized_children = ChildSerializer(children, many=True) 
+        return Response(serialized_children.data, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        serializer = ChildSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAdminOrNGO])
@@ -230,6 +257,35 @@ def guardian_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['GET'])
+def get_guardian_by_phone(request, phone_number):
+    try:
+        guardian = Guardian.objects.get(phone_number=phone_number)
+    except Guardian.DoesNotExist:
+        return Response(
+            {"error": "Guardian not found"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Serialize the guardian
+    guardian_serializer = GuardianSerializer(guardian)
+
+    # Get the related children for the guardian
+    children = guardian.child_set.all()
+
+    # Serialize the related children using the ChildSerializer
+    children_serializer = ChildSerializer(children, many=True)
+
+    # Combine the guardian and children data
+    response_data = {
+        'guardian': guardian_serializer.data,
+        'children': children_serializer.data,
+    }
+
+    return Response(response_data, status=status.HTTP_200_OK)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAdminOrNGO])
@@ -240,6 +296,7 @@ def guardian_detail(request, pk):
         return Response({'message': 'Guardian not found'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
+        # Use the GuardianSerializer with related children
         serializer = GuardianSerializer(guardian)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'PUT':

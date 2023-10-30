@@ -23,4 +23,4 @@ class ChildAdmin(admin.ModelAdmin):
 
 @admin.register(Guardian)
 class GuardianAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone_number')
+    list_display = ('first_name', 'last_name', 'phone_number', 'location')
