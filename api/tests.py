@@ -30,8 +30,7 @@ class LocationViewTests(TestCase):
         
     def test_get_location_detail(self):
         response = self.client.get(f'/api/location/{self.location.id}/')  
-from django.urls import reverse
-from Immunization_Record.models import Immunization_Record
+
 
 class ImmunizationAPITestCase(TestCase):
     def setUp(self):

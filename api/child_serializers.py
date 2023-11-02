@@ -8,5 +8,5 @@ class ChildSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Child
-        fields = ['id', 'first_name', 'last_name', 'date_of_birth', 'gender', 'status', 'guardian_name', 'phone_number', 'location_name', 'guardian']
+        fields = ['id', 'first_name', 'last_name', 'date_of_birth','age', 'gender', 'status', 'guardian_name', 'phone_number', 'location_name', 'guardian']
         read_only_fields = ['phone_number']

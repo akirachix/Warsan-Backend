@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ImmunizationRecordConfig(AppConfig):
+class VaccineRecordsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'Immunization_Record'
+    name = 'vaccine_records'

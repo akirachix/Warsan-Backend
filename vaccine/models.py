@@ -3,18 +3,20 @@ from django.db import models
 class Vaccine(models.Model):
     VACCINE_CHOICES = [
         ('BCG', 'BCG - Tuberculosis'),
-        ('HepB', 'Hepatitis B'),
-        ('DTP', 'DTP - Diphtheria, Tetanus, Pertussis'),
-        ('IPV', 'IPV  - Polio'),
-        ('HiB', 'HiB - Haemophilus influenzae type b'),
-        ('PCV13', 'PCV13- Pneumococcal disease'),
-        ('RV', 'RV - Rotavirus'),
-        ('MMR', 'MMR- Measles, Mumps, Rubella'),
-        ('Varicella', 'Varicella - Chickenpox'),
+        ('Polio1', 'Polio1  - OPV'),
+        ('DPT-HepB-Hib1', 'DPT-HepB-Hib1 - DPT-HepB-Hib1'),
+        ('DPT-HepB-Hib2', 'DPT-HepB-Hib2 - DPT-HepB-Hib2'),
+        ('DPT-HepB-Hib3', 'DPT-HepB-Hib3 - DPT-HepB-Hib3'),
+        ('Polio2', 'Polio2  - OPV'),
+        ('PCV1', 'PCV1  - PCV1'),
+        ('Rotavirus', 'Rota - Rota'),
+        ('MRV1', 'Measles-Rubella Vaccine- MRV1'),
+        ('PCV2', 'PCV2  - PCV'),
+        ('MMR', 'Measles, Mumps, Rubella- MMR'),
+        ('DPT-HepB-Hib4', 'DPT-HepB-Hib4 - DPT-HepB-Hib4'),
+        ('Polio3', 'Polio3  - OPV'),
         ('HepA', 'Hepatitis A'),
-        ('MenACWY', 'MenACWY- Meningococcal disease'),
-        ('DTaP-IPV-HiB-HepB', 'DTaP-IPV-HiB-HepB - Diphtheria, Tetanus, Pertussis, Polio, Haemophilus influenzae type b, Hepatitis B'),
-        ('Influenza', 'Influenza (Seasonal)'),
+
     ]
 
     vaccine_choice = models.CharField(max_length=32, choices=VACCINE_CHOICES, unique=True, null=True)

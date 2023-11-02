@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from location.models import Location
-from Immunization_Record.models import Immunization_Record
+from vaccine_records.models import Immunization_Record
 from registration.models import CustomUser, Healthworker
 from vaccine.models import Vaccine
 from django.contrib.auth.tokens import default_token_generator
@@ -36,19 +36,19 @@ def location_list(request):
 
 
 
-@api_view(['GET', 'POST', 'PUT'])
-@permission_classes([IsAdminOrNGO])
-def immunization_record_list(request):
-    if request.method == 'GET':
-        immunization_records = Immunization_Record.objects.all()
-        serializer = Immunization_RecordSerializer(immunization_records, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'POST':
-        serializer = Immunization_RecordSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['GET', 'POST', 'PUT'])
+# @permission_classes([IsAdminOrNGO])
+# def immunization_record_list(request):
+#     if request.method == 'GET':
+#         immunization_records = Immunization_Record.objects.all()
+#         serializer = Immunization_RecordSerializer(immunization_records, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#     elif request.method == 'POST':
+#         serializer = Immunization_RecordSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
     
@@ -330,20 +330,20 @@ def ngo_logout(request):
     return Response({'message': 'NGO user logged out successfully'}, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-def immunization_status_api_view(request):
-    fully_immunized_records = Immunization_Record.objects.filter(next_date_of_administration__isnull=True)
-    incomplete_immunized_records = Immunization_Record.objects.exclude(next_date_of_administration__isnull=True)
+# @api_view(['GET'])
+# def immunization_status_api_view(request):
+#     fully_immunized_records = Immunization_Record.objects.filter(next_date_of_administration__isnull=True)
+#     incomplete_immunized_records = Immunization_Record.objects.exclude(next_date_of_administration__isnull=True)
 
-    fully_immunized_serializer = Immunization_RecordSerializer(fully_immunized_records, many=True)
-    incomplete_immunized_serializer = Immunization_RecordSerializer(incomplete_immunized_records, many=True)
+#     fully_immunized_serializer = Immunization_RecordSerializer(fully_immunized_records, many=True)
+#     incomplete_immunized_serializer = Immunization_RecordSerializer(incomplete_immunized_records, many=True)
 
-    response_data = {
-        'fully_immunized_records': fully_immunized_serializer.data,
-        'incomplete_immunized_records': incomplete_immunized_serializer.data
-    }
+#     response_data = {
+#         'fully_immunized_records': fully_immunized_serializer.data,
+#         'incomplete_immunized_records': incomplete_immunized_serializer.data
+#     }
 
-    return Response(response_data, status=status.HTTP_200_OK)
+#     return Response(response_data, status=status.HTTP_200_OK)
     
 @api_view(['GET'])
 def child_vaccines_count_api_view(request, child_id):
@@ -439,3 +439,28 @@ def all_regions_rates(request):
         return Response(immunization_rates, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET', 'POST', 'PUT'])
+def list_immunization_records(request):
+    if request.method == 'GET':
+        immunization_records = Immunization_Record.objects.all()
+        serializer = ImmunizationRecordSerializer(immunization_records, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = ImmunizationRecordSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'PUT':
+        try:
+            child_id = request.data['child']
+            immunization_record = Immunization_Record.objects.get(child_id=child_id)
+        except Immunization_Record.DoesNotExist:
+            return Response({"error": "Immunization Record not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ImmunizationRecordSerializer(immunization_record, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

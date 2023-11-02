@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404, redirect, render
-import Immunization_Record
 
 from api.serializers import GuardianSerializer
 from api.views import guardian_list

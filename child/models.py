@@ -25,7 +25,6 @@ class Child(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='A')
     location = models.ForeignKey(Location, on_delete=models.SET_NULL,null=True)
     phone_number = PhoneNumberField(region='IR')
-    next_date_of_administration = models.DateField(null=True, blank=True)
    
     def save(self, *args, **kwargs):
         if self.guardian:
@@ -40,12 +39,14 @@ class Child(models.Model):
         child.save()
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-    def calculate_age(self):
+    def age(self):
         today = date.today()
         age_in_months = (today.year - self.date_of_birth.year) * 12 + (today.month - self.date_of_birth.month)
         return age_in_months 
     class Meta:
         unique_together = ('first_name', 'last_name', 'guardian')
+    
+
 
 from django.db import models
  

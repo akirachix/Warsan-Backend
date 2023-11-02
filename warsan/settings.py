@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     "vaccine",  
     'child'  ,
-    'Immunization_Record',
+    # 'immunization_records',
+    'vaccine_records',
     
 ]
 
@@ -203,17 +204,17 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'noreply@warsan.xyz' 
 
 
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 
-try:
-    send_mail(
-        'Test Email',
-        'This is a test email sent from Django.',
-        'noreply@warsan.xyz',
-        [' ',],
-        fail_silently=False,
-    )
-    print("Email sent successfully.")
-except Exception as e:
-    print("Email sending failed:", e)
+# try:
+#     send_mail(
+#         'Test Email',
+#         'This is a test email sent from Django.',
+#         'noreply@warsan.xyz',
+#         [' ',],
+#         fail_silently=False,
+#     )
+#     print("Email sent successfully.")
+# except Exception as e:
+#     print("Email sending failed:", e)
 
