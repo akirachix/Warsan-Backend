@@ -20,7 +20,6 @@ from .serializers import *
 from .permissions import IsAdminOrNGO, IsHealthworker, IsOwnerOrAdmin, IsAdminOrReadOnly
 from . utils import send_emails
 
-
 @api_view(['GET', 'POST'])
 def location_list(request):
     locations = Location.objects.all()
@@ -464,3 +463,13 @@ def list_immunization_records(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def child_immunization_records(request, child_id):
+    try:
+        immunization_records = Immunization_Record.objects.filter(child_id=child_id)
+        serializer = ImmunizationRecordSerializer(immunization_records, many=True)
+        return Response(serializer.data)
+    except Immunization_Record.DoesNotExist:
+        return Response({"error": "Immunization Records not found for the specified child."}, status=status.HTTP_404_NOT_FOUND)

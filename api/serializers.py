@@ -52,6 +52,19 @@ class ImmunizationRecordSerializer(serializers.ModelSerializer):
     def get_child_phone_number(self, obj):
         return str(obj.child.phone_number)
     
+    def create(self, validated_data):
+        vaccineadministration_data = validated_data.pop('vaccineadministration_set', [])
+        immunization_record = Immunization_Record.objects.create(**validated_data)
+
+        for vaccineadministration in vaccineadministration_data:
+            VaccineAdministration.objects.create(
+                record=immunization_record,
+                vaccine=vaccineadministration['vaccine'],
+                date_of_administration=vaccineadministration['date_of_administration']
+            )
+
+        return immunization_record
+    
     def update(self, instance, validated_data):
         vaccineadministration_data = validated_data.pop('vaccineadministration_set', [])
         instance = super().update(instance, validated_data)
@@ -69,30 +82,8 @@ class ImmunizationRecordSerializer(serializers.ModelSerializer):
         model = Immunization_Record
         fields = '__all__'
 
-# class Immunization_RecordSerializer(serializers.ModelSerializer):
-#     child_first_name = serializers.ReadOnlyField(source='child.first_name')
-#     child_last_name = serializers.ReadOnlyField(source='child.last_name')
-#     child_date_of_birth = serializers.ReadOnlyField(source='child.date_of_birth')
-#     child_location = serializers.ReadOnlyField(source='child.location.region')
-#     child_phone_number = serializers.SerializerMethodField()
-#     vaccines = serializers.SerializerMethodField()
-#     guardian_name = serializers.ReadOnlyField(source='guardian.first_name')
-
-#     def get_child_phone_number(self, obj):
-#         return str(obj.child.phone_number)
-
-#     def get_vaccines(self, obj):
-#         return [{'id': vaccine.id, 'vaccine_choice': vaccine.vaccine_choice} for vaccine in obj.vaccine.all()]
-
-#     class Meta:
-#         model = Immunization_Record
-#         fields = [
-#             'id', 'child_first_name', 'child_last_name', 'guardian_name', 'child_date_of_birth',
-#             'child_location', 'child_phone_number', 'vaccines',
-#             'date_of_administration', 'next_date_of_administration'
-#         ]
 
 class VaccineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vaccine
-        fields = '__all__'
+        fields = ['id', 'vaccine_choice']
