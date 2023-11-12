@@ -46,7 +46,7 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path("child/",include("child.urls")),
-    # path("vaccine_records/",include("vaccine_records.urls")),
+    path("vaccine_records/",include("vaccine_records.urls")),
     #  path("registration/",include("registration.urls"))
     
 

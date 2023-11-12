@@ -33,15 +33,21 @@ class GuardianSerializer(serializers.ModelSerializer):
 
 from rest_framework import serializers
 from vaccine_records.models import VaccineAdministration, Immunization_Record
+
+
 class VaccineAdministrationSerializer(serializers.ModelSerializer):
+    vaccine_choice = serializers.ReadOnlyField(source='vaccine.vaccine_choice')
+
     class Meta:
         model = VaccineAdministration
-        fields = ('vaccine', 'date_of_administration')
+        fields = ('vaccine', 'date_of_administration', 'vaccine_choice')
+
 
 
 class ImmunizationRecordSerializer(serializers.ModelSerializer):
     vaccineadministration_set = VaccineAdministrationSerializer(many=True)
     id = serializers.IntegerField(source='child.id', read_only=True)
+
 
     child_first_name = serializers.ReadOnlyField(source='child.first_name')
     child_last_name = serializers.ReadOnlyField(source='child.last_name')

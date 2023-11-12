@@ -73,7 +73,7 @@
     <div class="children-container">
         {% for child_data in children_with_age %}
             <div class="child-card">
-                <h3><a href="{% url 'view_immunization_record' child_data.child.id %}">{{ child_data.child.first_name }} {{ child_data.child.last_name }}</a></h3>
+                <h3><a href="{% url 'immunization_detail' child_data.child.id %}">{{ child_data.child.first_name }} {{ child_data.child.last_name }}</a></h3>
                 <p>{{ child_data.age }} months old</p>
             </div>
         {% endfor %}

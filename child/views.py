@@ -30,7 +30,7 @@ def guardian_detail(request, guardian_id):
     children = guardian.child_set.all()
     children_with_age = []
     for child in children:
-        child_age = child.calculate_age()
+        child_age = child.age()
         children_with_age.append({'child': child, 'age': child_age})
     context = {
         'guardian': guardian,
@@ -67,7 +67,7 @@ def register_child(request, guardian_id):
             child = form.save(commit=False)
             child.guardian = guardian
             child.save()
-            return redirect('upload_immunization',child_id=child.id)
+            return redirect('create_immunization_record',child_id=child.id)
     else:
         form = ChildRegistrationForm(guardian_id=guardian_id)
     return render(request, 'child/register_child.html', {'form': form, 'guardian': guardian})
